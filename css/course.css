@@ -35,7 +35,16 @@ table, th, td {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 40px;
+  /* overflow-x: auto;
+  height: calc(100vh - 120px); */
 }
+
+/* thead {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+} */
 
 .controls-container {
   display: flex;
@@ -64,8 +73,6 @@ table, th, td {
   flex-direction: column;
 }
 
-table thead th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+table {
+  height: 100px;
 }
