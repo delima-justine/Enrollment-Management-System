@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/student.css">
+  <title>Sections</title>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Sections</h1>
+    </div>
+    
+    <div id="tbl_dropdown_container" class="dropdown-container">
+      <select name="tables" id="table_select" onChange="switchTables()">
+        <option value="">-- Please Select a Table --</option>
+        <option value="course">Course ✅</option>
+        <option value="course-prerequisite">Course Prerequisite</option>
+        <option value="department">Department ✅</option>
+        <option value="enrollment">Enrollment ✅</option>
+        <option value="instructor">Instructor</option>
+        <option value="program">Program</option>
+        <option value="room">Room</option>
+        <option value="section">Section ✅</option>
+        <option value="student">Student ✅</option>
+        <option value="term">Term</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="controls-container">
+    <button  
+      type="button"
+      onClick="addStudent()">
+        Add Section
+    </button>
+  </div>
+
+  <!-- Student Input Fields -->
+  <div class="input-container">
+    <div>
+      <div class="input-label">
+        <label>Student No.</label>
+        <input 
+          type="text" 
+          id="student_num_input"
+          placeholder="Section Code">
+      </div>
+
+      <div class="input-label">
+        <label>Last Name</label>
+        <input 
+          type="text" 
+          id="last_name_input"
+          placeholder="Last Name">
+      </div>
+
+      <div class="input-label">
+        <label>First name</label>
+        <input 
+          type="text" 
+          id="first_name_input"
+          placeholder="First Name">
+      </div>
+    </div>
+
+    <div>
+      <div class="input-label">
+        <label>Email</label>
+        <input 
+          type="email" 
+          id="email_input"
+          placeholder="Email">
+      </div>
+
+      <div class="input-label">
+        <label>Gender</label>
+        <input 
+          type="text" 
+          id="gender_input"
+          placeholder="Gender">
+      </div>
+    </div>
+
+    <div>
+      <div class="input-label">
+        <label>Year Level</label>
+        <input 
+          type="number" 
+          id="year_level_input"
+          placeholder="Year Level">
+      </div>
+
+      <div class="input-label">
+        <label>Program ID</label>
+        <input 
+          type="number" 
+          id="program_id_input"
+          placeholder="Program ID">
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead class="thead-dark">
+        <th>#</th>
+        <th>Student No.</th>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Year Level</th>
+        <th>Program ID</th>
+      </thead>
+
+      <tbody id="table_body_student">
+        <tr>
+          <td>1</td>
+          <td>2023-00433-TG-0</td>
+          <td>Doe</td>
+          <td>John</td>
+          <td>jdoe@email.com</td>
+          <td>M</td>
+          <td>3</td>
+          <td>1</td>
+          <td><button>Edit</button></td>
+          <td><button>Delete</button></td>
+        </tr>
+      </tbody>
+
+      <tfoot></tfoot>
+    </table>
+  </div>
+
+  <script src="../scripts/student.js"></script>
+</script>
+</body>
+</html>
