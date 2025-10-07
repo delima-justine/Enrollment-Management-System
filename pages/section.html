@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/section.css">
+  <title>Sections</title>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Sections</h1>
+    </div>
+    
+    <div id="tbl_dropdown_container" class="dropdown-container">
+      <select name="tables" id="table_select" onChange="switchTables()">
+        <option value="">-- Please Select a Table --</option>
+        <option value="course">Course ✅</option>
+        <option value="course-prerequisite">Course Prerequisite</option>
+        <option value="department">Department ✅</option>
+        <option value="enrollment">Enrollment ✅</option>
+        <option value="instructor">Instructor</option>
+        <option value="program">Program</option>
+        <option value="room">Room</option>
+        <option value="section">Section ✅</option>
+        <option value="student">Student ✅</option>
+        <option value="term">Term</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="controls-container">
+    <button  
+      type="button"
+      onClick="addSection()">
+        Add Section
+    </button>
+  </div>
+
+  <!-- Section Input Fields -->
+  <div class="input-container">
+    <div>
+      <div class="input-label">
+        <label>Section Code</label>
+        <input 
+          type="text" 
+          id="section_code_input"
+          placeholder="Section Code">
+      </div>
+
+      <div class="input-label">
+        <label>Course ID</label>
+        <input 
+          type="number" 
+          id="course_id_input"
+          placeholder="Course ID">
+      </div>
+
+      <div class="input-label">
+        <label>Term ID</label>
+        <input 
+          type="number" 
+          id="term_id_input"
+          placeholder="Term ID">
+      </div>
+    </div>
+
+    <div>
+      <div class="input-label">
+        <label>Instructor ID</label>
+        <input 
+          type="number" 
+          id="instructor_id_input"
+          placeholder="Instructor ID">
+      </div>
+
+      <div class="input-label">
+        <label>Day</label>
+        <input 
+          type="text" 
+          id="day_input"
+          placeholder="Day">
+      </div>
+
+      <div class="input-label">
+        <label>Start Time</label>
+        <input 
+          type="time" 
+          id="start_time_input"
+          placeholder="Department Name">
+      </div>
+    </div>
+
+    <div>
+      <div class="input-label">
+        <label>End Time</label>
+        <input 
+          type="time" 
+          id="end_time_input"
+          placeholder="End Time">
+      </div>
+
+      <div class="input-label">
+        <label>Room ID</label>
+        <input 
+          type="number" 
+          id="room_id_input"
+          placeholder="Room ID">
+      </div>
+
+      <div class="input-label">
+        <label>Max Capacity</label>
+        <input 
+          type="number" 
+          id="max_capacity_input"
+          placeholder="Max Capacity">
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead class="thead-dark">
+        <th>#</th>
+        <th>Section Code</th>
+        <th>Course ID</th>
+        <th>Term ID</th>
+        <th>Instructor ID</th>
+        <th>Day</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Room ID</th>
+        <th>Max Capacity</th>
+      </thead>
+
+      <tbody id="table_body_section">
+        <tr>
+          <td>1</td>
+          <td>DIT-TG</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>T</td>
+          <td>10:30:00</td>
+          <td>03:00:00</td>
+          <td>12</td>
+          <td>45</td>
+          <td><button>Edit</button></td>
+          <td><button>Delete</button></td>
+        </tr>
+      </tbody>
+
+      <tfoot></tfoot>
+    </table>
+  </div>
+
+  <script src="../scripts/section.js"></script>
+</script>
+</body>
+</html>
