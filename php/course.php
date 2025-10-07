@@ -46,11 +46,11 @@ if($conn->connect_error) {
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_course(course_code, course_title, units,
-                        lecture_hours,  lab_hours)
-                        VALUES(?, ?, ?, ?, ?)");
+                        lecture_hours, lab_hours, dept_id)
+                        VALUES(?, ?, ?, ?, ?, ?)");
 
-  $stmt->bind_param("ssiii", 
-    $course_code, $course_title, $units, $lecture_hours, $lab_hours);
+  $stmt->bind_param("ssiiii", 
+    $course_code, $course_title, $units, $lecture_hours, $lab_hours, $dept_id);
 
   $stmt->execute();
 
@@ -69,6 +69,7 @@ if($conn->connect_error) {
   $new_units = $_PATCH['units'] ?? "";
   $new_lecture_hours = $_PATCH['lecture_hours'] ?? "";
   $new_lab_hours = $_PATCH['lab_hours'] ?? "";
+  $new_dept_id = $_PATCH['dept_id'] ?? "";
 
   $stmt = $conn->prepare("
           UPDATE tbl_course
@@ -76,12 +77,13 @@ if($conn->connect_error) {
           course_title = ?,
           units = ?,
           lecture_hours = ?,
-          lab_hours = ?
+          lab_hours = ?,
+          dept_id = ?
           WHERE course_id = ?;
   ");
 
-  $stmt->bind_param("ssiiis", $new_course_code, $new_course_title, $new_units, 
-    $new_lecture_hours, $new_lab_hours, $course_id);
+  $stmt->bind_param("ssiiiii", $new_course_code, $new_course_title, $new_units, 
+    $new_lecture_hours, $new_lab_hours, $new_dept_id, $course_id);
 
 
   $stmt->execute();
