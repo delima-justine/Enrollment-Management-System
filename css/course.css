@@ -34,5 +34,13 @@ table, th, td {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  /* margin-top: 50px; */
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  height: 35px;
+  margin: 50px 40px 10px 40px; /*t, r, b, l*/
 }
