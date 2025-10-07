@@ -42,5 +42,5 @@ table, th, td {
   flex-direction: row;
   justify-content: end;
   height: 35px;
-  margin: 50px 40px 10px 40px; /*t, r, b, l*/
+  margin: 50px 70px 10px 70px; /*t, r, b, l*/
 }
