@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/department.css">
+  <title>Courses</title>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Departments</h1>
+    </div>
+    
+    <div id="tbl_dropdown_container" class="dropdown-container">
+      <select name="tables" id="table_select" onChange="switchTables()">
+        <option value="">-- Please Select a Table --</option>
+        <option value="course">Course ✅</option>
+        <option value="course-prerequisite">Course Prerequisite</option>
+        <option value="department">Department ✅</option>
+        <option value="enrollment">Enrollment ✅</option>
+        <option value="instructor">Instructor</option>
+        <option value="program">Program</option>
+        <option value="room">Room</option>
+        <option value="section">Section ✅</option>
+        <option value="student">Student ✅</option>
+        <option value="term">Term</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="controls-container">
+    <button  
+      type="button"
+      onClick="addDepartment()">
+        Add Department
+    </button>
+  </div>
+
+  <div class="input-container">
+    <div class="input-label">
+      <label>Department Code</label>
+      <input 
+        type="text" 
+        id="department_code_input"
+        placeholder="Department Code">
+    </div>
+
+    <div class="input-label">
+      <label>Department Name</label>
+      <input 
+        type="text" 
+        id="department_name_input"
+        placeholder="Department Name">
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead class="thead-dark">
+        <th>#</th>
+        <th>Department Code</th>
+        <th>Department Name</th>
+      </thead>
+
+      <tbody id="table_body_dept">
+        <tr>
+          <td>1</td>
+          <td>CCIS</td>
+          <td>College of Computer and Information Sciences</td>
+          <td><button>Edit</button></td>
+          <td><button>Delete</button></td>
+        </tr>
+      </tbody>
+
+      <tfoot></tfoot>
+    </table>
+  </div>
+
+  <script src="../scripts/department.js"></script>
+</script>
+</body>
+</html>
