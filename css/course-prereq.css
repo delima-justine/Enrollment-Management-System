@@ -25,3 +25,23 @@ table, th, td {
   padding: 10px;
   text-align: left;
 }
+
+.thead-dark {
+  background-color: black;
+  color: white;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  height: 35px;
+  margin: 50px 250px 10px 100px; /*t, r, b, l*/
+}
