@@ -2,8 +2,37 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+  margin: 0;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+  justify-content: center;
+  align-items: center;
+  gap: 55em;
+}
+
+header>div>h1 {
+  color: white;
+}
+
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 10px;
+}
+
+.thead-dark {
+  background-color: black;
+  color: white;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }
