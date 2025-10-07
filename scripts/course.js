@@ -34,4 +34,32 @@ function displayCourses() {
   });
 }
 
-displayCourses()
+function addCourse() {
+  const courseCodeInput = document.querySelector('#course_code_input');
+  const courseTitleInput = document.querySelector('#course_title_input');
+  const unitsInput = document.querySelector('#units_input');
+  const lectureHrsInput = document.querySelector('#lecture_hrs_input');
+  const labHrsInput = document.querySelector('#lab_hrs_input');
+  const departmentIdInput = document.querySelector('#dept_id_input');
+
+  fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `course_code=${courseCodeInput.value}&` +
+          `course_title=${courseTitleInput.value}&` +
+          `units=${unitsInput.value}&lecture_hours=${lectureHrsInput.value}&` +
+          `lab_hours=${labHrsInput.value}&dept_id=${departmentIdInput.value}`
+  })
+  .then((response) => response.text())
+  .then(responseText => {
+    alert(responseText);
+    displayCourses(); // updates the table
+  }).catch (error => {
+    alert('console error.');
+  })
+}
+
+// Display courses inside the table
+displayCourses();

@@ -42,7 +42,7 @@ if($conn->connect_error) {
   $units = $_POST['units'];
   $lecture_hours = $_POST['lecture_hours'];
   $lab_hours = $_POST['lab_hours'];
-  // $dept_id = $_POST['dept_id'];
+  $dept_id = $_POST['dept_id'];
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_course(course_code, course_title, units,
