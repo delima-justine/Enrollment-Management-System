@@ -18,7 +18,7 @@ if($conn->connect_error) {
 } else if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $response = [];
 
-  $stmt = $conn->prepare("SELECT * FROM tbl_room");
+  $stmt = $conn->prepare("SELECT * FROM tbl_room ORDER BY room_id DESC");
   $stmt->execute();
   $result = $stmt->get_result();
 
