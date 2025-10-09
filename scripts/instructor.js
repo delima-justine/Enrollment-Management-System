@@ -48,12 +48,12 @@ function addInstructor() {
     },
     body: `last_name=${lastNameInput.value}&` +
           `first_name=${firstNameInput.value}&` +
-          `email=${emailInput.value}&dept_id="${departmentIdInput.value}"`
+          `email=${emailInput.value}&dept_id=${departmentIdInput.value}`
   })
   .then((response) => response.text())
   .then(responseText => {
     alert(responseText);
-    displayDepartments(); // updates the table
+    displayInstructors(); // updates the table
   }).catch (error => {
     alert('console error.');
   })
@@ -122,7 +122,7 @@ function deleteInstructor(button) {
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
     },
-    body: `dept_id=${instructorId}`,
+    body: `instructor_id=${instructorId}`,
   })
   .then((response) => response.text())
   .then((responseText) => {
