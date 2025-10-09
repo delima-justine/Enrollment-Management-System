@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/instructor.css">
+  <title>Instructors</title>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Instructors</h1>
+    </div>
+
+    <div id="tbl_dropdown_container" class="dropdown-container">
+      <select name="tables" id="table_select" onChange="switchTables()">
+        <option value="">-- Please Select a Table --</option>
+        <option value="course">Course ✅</option>
+        <option value="course-prerequisite">Course Prerequisite</option>
+        <option value="department">Department ✅</option>
+        <option value="enrollment">Enrollment ✅</option>
+        <option value="instructor">Instructor</option>
+        <option value="program">Program</option>
+        <option value="room">Room</option>
+        <option value="section">Section ✅</option>
+        <option value="student">Student ✅</option>
+        <option value="term">Term</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="controls-container">
+    <button  
+      type="button"
+      onclick="addInstructor()">
+        Add Course
+    </button>
+  </div>
+
+  <div class="input-container">
+    <div class="input-label">
+      <label>Course Code</label>
+      <input 
+        type="text" 
+        id="course_code_input"
+        placeholder="Course Code">
+    </div>
+
+    <div class="input-label">
+      <label>Course Title</label>
+      <input 
+        type="text" 
+        id="course_title_input"
+        placeholder="Course Title">
+    </div>
+
+    <div class="input-label">
+      <label>Units</label>
+      <input 
+        type="number"
+        id="units_input"
+        placeholder="Units">
+    </div>
+
+    <div class="input-label">
+      <label>Units</label>
+      <input 
+        type="number"
+        id="units_input"
+        placeholder="Units">
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead class="thead-dark">
+        <th>#</th>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Email</th>
+        <th>Department ID</th>
+      </thead>
+      <tbody id="table_body_instructor">
+        <tr>
+          <td>1</td>
+          <td>Almiranez</td>
+          <td>Gecilie</td>
+          <td>geciliealmiranez@pup.edu.ph</td>
+          <td>1</td>
+          <td><button>Edit</button></td>
+          <td><button>Delete</button></td>
+        </tr>
+      </tbody>
+      <tfoot></tfoot>
+    </table>
+  </div>
+
+  <script src="../scripts/course.js"></script>
+</script>
+</body>
+</html>
