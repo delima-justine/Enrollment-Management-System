@@ -16,10 +16,12 @@ function displayDepartments() {
         <td>${department.dept_name}</td>
         <td><button 
           type="button"
+          class="btn btn-warning"
           onclick="editDepartment(this)">Edit</button></td>
        <td>
           <button 
           type="button"
+          class="btn btn-danger"
           onClick="deleteDepartment(this)">
             Delete
           </button>
