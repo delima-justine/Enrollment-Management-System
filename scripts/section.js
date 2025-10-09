@@ -23,10 +23,12 @@ function displaySections() {
         <td>${section.max_capacity}</td>
         <td><button 
           type="button"
+          class="btn btn-warning"
           onclick="editSection(this)">Edit</button></td>
        <td>
           <button 
           type="button"
+          class="btn btn-danger"
           onClick="deleteSection(this)">
             Delete
           </button>
