@@ -35,17 +35,20 @@ function displayInstructors() {
 }
 
 // Add new department
-function addDepartment() {
-  const deptCodeInput = document.querySelector('#department_code_input');
-  const deptNameInput = document.querySelector('#department_name_input');
+function addInstructor() {
+  const lastNameInput = document.querySelector('#last_name_input');
+  const firstNameInput = document.querySelector('#first_name_input');
+  const emailInput = document.querySelector('#email_input');
+  const departmentIdInput = document.querySelector('#dept_id_input');
 
-  fetch(departmentEndpoint, {
+  fetch(instructorEndpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: `dept_code=${deptCodeInput.value}&` +
-          `dept_name=${deptNameInput.value}&`
+    body: `last_name=${lastNameInput.value}&` +
+          `first_name=${firstNameInput.value}&` +
+          `email=${emailInput.value}&dept_id="${departmentIdInput.value}"`
   })
   .then((response) => response.text())
   .then(responseText => {
@@ -57,7 +60,7 @@ function addDepartment() {
 }
 
 // Edit a department
-function editDepartment(button) {
+function editInstructor(button) {
   const row = button.closest('tr');
   const cells = row.querySelectorAll('td');
   const isEditable = cells[0].contentEditable === "true";
@@ -70,9 +73,11 @@ function editDepartment(button) {
 
   // appends the array.
   updatedRow.push({
-      dept_id: cells[0].innerHTML, 
-      dept_code: cells[1].innerHTML,
-      dept_title: cells[2].innerHTML
+      instructor_id: cells[0].innerHTML, 
+      last_name: cells[1].innerHTML,
+      first_name: cells[2].innerHTML,
+      email: cells[3].innerHTML,
+      dept_id: cells[4].innerHTML
   });
 
   console.log(updatedRow); // prints the updated array.
@@ -81,19 +86,20 @@ function editDepartment(button) {
     // Save mode
     button.textContent = "Edit";
 
-    fetch(departmentEndpoint, {
+    fetch(instructorEndpoint, {
       method: 'PATCH',
       headers: {
         "Content-type": "application/x-www-form-urlencoded",
       },
-      body: `dept_id=${updatedRow[0].dept_id}&` +
-        `dept_code=${updatedRow[0].dept_code}&` +
-        `dept_name=${updatedRow[0].dept_title}`
+      body: `instructor_id=${updatedRow[0].instructor_id}&` +
+        `last_name=${updatedRow[0].last_name}&` +
+        `first_name=${updatedRow[0].first_name}&` +
+        `email=${updatedRow[0].email}&dept_id=${updatedRow[0].dept_id}`
     })
     .then((response) => response.text())
     .then((responseText) => {
       alert(responseText);
-      displayDepartments();
+      displayInstructors();
     });
 
     updatedRow.length = 0; // clear the array.
@@ -106,22 +112,22 @@ function editDepartment(button) {
 }
 
 // Delete a department
-function deleteDepartment(button) {
+function deleteInstructor(button) {
   const row = button.closest('tr');
   const cells = row.querySelectorAll('td');
-  const deptId = cells[0].innerHTML;
+  const instructorId= cells[0].innerHTML;
   
-  fetch(departmentEndpoint, {
+  fetch(instructorEndpoint, {
     method: 'DELETE',
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
     },
-    body: `dept_id=${deptId}`,
+    body: `dept_id=${instructorId}`,
   })
   .then((response) => response.text())
   .then((responseText) => {
     alert(responseText);
-    displayDepartments();
+    displayInstructors();
   })
 }
 
