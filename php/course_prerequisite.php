@@ -18,7 +18,7 @@ if($conn->connect_error) {
 } else if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $response = [];
 
-  $stmt = $conn->prepare("SELECT * FROM tbl_course_prerequisite");
+  $stmt = $conn->prepare("SELECT * FROM tbl_course_prerequisite ORDER BY course_id DESC");
   $stmt->execute();
 
   if(!$stmt) {
