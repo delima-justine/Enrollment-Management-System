@@ -3,108 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/student.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
+    rel="stylesheet" 
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" 
+    crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" 
+    crossorigin="anonymous"></script>
+  <!-- <link rel="stylesheet" href="../css/student.css"> -->
   <title>Sections</title>
 </head>
 <body>
-  <header>
-    <div>
-      <h1>Sections</h1>
-    </div>
-    
-    <div id="tbl_dropdown_container" class="dropdown-container">
-      <select name="tables" id="table_select" onChange="switchTables()">
-        <option value="">-- Please Select a Table --</option>
-        <option value="course">Course ✅</option>
-        <option value="course-prerequisite">Course Prerequisite</option>
-        <option value="department">Department ✅</option>
-        <option value="enrollment">Enrollment ✅</option>
-        <option value="instructor">Instructor</option>
-        <option value="program">Program</option>
-        <option value="room">Room</option>
-        <option value="section">Section ✅</option>
-        <option value="student">Student ✅</option>
-        <option value="term">Term</option>
-      </select>
+  <header class="container-fluid bg-dark mx-0 my-0 ">
+    <div class="row mx-0 my-0">
+      <div class="col d-flex align-content-center">
+        <h1 class="text-white">Courses</h1>
+      </div>
+
+      <div id="tbl_dropdown_container" class="col d-flex justify-content-center mx-0 my-3">
+        <select 
+          name="tables" 
+          id="table_select" 
+          onChange="switchTables()"
+          class="form-select form-select-sm">
+
+          <option selected value="">-- Please Select a Table --</option>
+          <option value="course">Course ✅</option>
+          <option value="course-prerequisite">Course Prerequisite</option>
+          <option value="department">Department ✅</option>
+          <option value="enrollment">Enrollment ✅</option>
+          <option value="instructor">Instructor</option>
+          <option value="program">Program</option>
+          <option value="room">Room</option>
+          <option value="section">Section ✅</option>
+          <option value="student">Student ✅</option>
+          <option value="term">Term</option>
+
+        </select>
+      </div>
     </div>
   </header>
 
-  <div class="controls-container">
-    <button  
-      type="button"
-      onClick="addStudent()">
-        Add Section
-    </button>
-  </div>
-
   <!-- Student Input Fields -->
-  <div class="input-container">
-    <div>
-      <div class="input-label">
+  <div class="container-sm mx-5 my-4 bg-secondary bg-opacity-25 p-4">
+    <div class="row">
+      <h3>Add new student</h3>
+    </div>
+
+    <div class="container-sm row">
+      <div class="input-label col">
         <label>Student No.</label>
         <input 
           type="text" 
           id="student_num_input"
+          class="form-control form-control-sm"
           placeholder="Section Code">
       </div>
 
-      <div class="input-label">
+      <div class="input-label col">
         <label>Last Name</label>
         <input 
           type="text" 
           id="last_name_input"
+          class="form-control form-control-sm"
           placeholder="Last Name">
       </div>
 
-      <div class="input-label">
+      <div class="input-label col">
         <label>First name</label>
         <input 
           type="text" 
           id="first_name_input"
+          class="form-control form-control-sm"
           placeholder="First Name">
       </div>
     </div>
 
-    <div>
-      <div class="input-label">
+    <div class="container-sm row">
+      <div class="input-label col">
         <label>Email</label>
         <input 
           type="email" 
           id="email_input"
+          class="form-control form-control-sm"
           placeholder="Email">
       </div>
 
-      <div class="input-label">
+      <div class="input-label col">
         <label>Gender</label>
         <input 
           type="text" 
           id="gender_input"
+          class="form-control form-control-sm"
           placeholder="Gender">
       </div>
     </div>
 
-    <div>
-      <div class="input-label">
+    <div class="container-sm row">
+      <div class="input-label col">
         <label>Year Level</label>
         <input 
           type="number" 
           id="year_level_input"
+          class="form-control form-control-sm"
           placeholder="Year Level">
       </div>
 
-      <div class="input-label">
+      <div class="input-label col">
         <label>Program ID</label>
         <input 
           type="number" 
           id="program_id_input"
+          class="form-control form-control-sm"
           placeholder="Program ID">
       </div>
     </div>
   </div>
 
-  <div class="table-container">
-    <table>
-      <thead class="thead-dark">
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-auto">
+        <input 
+          type="text"
+          placeholder="Search course code"
+          onInput
+          class="form-control form-control-sm"/>
+      </div>
+
+      <div class="col-auto">
+        <button  
+          type="button"
+          class="btn btn-outline-success btn-sm"
+          onclick="addStudent()">
+            Add Student
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive-sm my-4 mx-4">
+    <table class="table table-striped">
+      <thead class="table-dark">
         <th>#</th>
         <th>Student No.</th>
         <th>Last Name</th>
@@ -113,9 +152,11 @@
         <th>Gender</th>
         <th>Year Level</th>
         <th>Program ID</th>
+        <th></th>
+        <th></th>
       </thead>
 
-      <tbody id="table_body_student">
+      <tbody id="table_body_student" class="table-light">
         <tr>
           <td>1</td>
           <td>2023-00433-TG-0</td>

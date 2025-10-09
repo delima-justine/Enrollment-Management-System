@@ -21,10 +21,12 @@ function displayStudents() {
         <td>${student.program_id}</td>
         <td><button 
           type="button"
+          class="btn btn-warning"
           onclick="editStudent(this)">Edit</button></td>
        <td>
           <button 
           type="button"
+          class="btn btn-danger"
           onClick="deleteStudent(this)">
             Delete
           </button>
