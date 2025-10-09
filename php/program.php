@@ -90,9 +90,9 @@ if($conn->connect_error) {
 } else if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
-  $dept_id = $_DELETE['dept_id'] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_program WHERE dept_id = ?");
-  $stmt->bind_param('i', $dept_id);
+  $program_id = $_DELETE['program_id'] ?? "";
+  $stmt = $conn->prepare("DELETE FROM tbl_program WHERE program_id = ?");
+  $stmt->bind_param('i', $program_id);
   $stmt->execute();
 
   if(!$stmt) {
