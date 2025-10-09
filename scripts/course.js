@@ -20,10 +20,12 @@ function displayCourses() {
         <td>${course.dept_id}</td>
         <td><button 
           type="button"
+          class="btn btn-warning"
           onclick="editCourse(this)">Edit</button></td>
        <td>
           <button 
           type="button"
+          class="btn btn-danger"
           onClick="deleteRow(this)">
             Delete
           </button>
