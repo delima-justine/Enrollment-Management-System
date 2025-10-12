@@ -211,7 +211,7 @@ function searchCourse() {
   });
 }
 
-function ExportTable(type) {
+function ExportTableToXLSX(type) {
   const courseTable = document.querySelector('#course_table');
   const file = XLSX.utils.table_to_book(courseTable, {sheet: "Courses"});
   const dateToday = new Date().toISOString().split('T')[0];
