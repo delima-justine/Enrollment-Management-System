@@ -1,4 +1,26 @@
 const courseEndpoint = "http://localhost/Enrollment-Management-System/php/course.php";
+const courseCodeInput = document.querySelector('#course_code_input');
+const courseTitleInput = document.querySelector('#course_title_input');
+const unitsInput = document.querySelector('#units_input');
+const lectureHrsInput = document.querySelector('#lecture_hrs_input');
+const labHrsInput = document.querySelector('#lab_hrs_input');
+const departmentIdInput = document.querySelector('#dept_id_input');
+
+function checkField() {
+  const addCourseBtn = document.querySelector('#add_course_btn');
+
+  if(courseCodeInput.value.trim().length &&
+      courseTitleInput.value.trim().length &&
+      unitsInput.value.trim().length &&
+      lectureHrsInput.value.trim().length &&
+      labHrsInput.value.trim().length &&
+      departmentIdInput.value.trim().length
+  ) {
+    addCourseBtn.disabled = false;
+  } else {
+    addCourseBtn.disabled = true;
+  }
+}
 
 function displayCourses() {
   const courseTable = document.querySelector("#table_body_course");
@@ -37,13 +59,6 @@ function displayCourses() {
 }
 
 function addCourse() {
-  const courseCodeInput = document.querySelector('#course_code_input');
-  const courseTitleInput = document.querySelector('#course_title_input');
-  const unitsInput = document.querySelector('#units_input');
-  const lectureHrsInput = document.querySelector('#lecture_hrs_input');
-  const labHrsInput = document.querySelector('#lab_hrs_input');
-  const departmentIdInput = document.querySelector('#dept_id_input');
-
   fetch(courseEndpoint, {
     method: "POST",
     headers: {

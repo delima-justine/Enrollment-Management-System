@@ -52,6 +52,7 @@
           type="text" 
           class="form-control form-control-sm"
           id="course_code_input"
+          oninput="checkField()"
           placeholder="Course Code">
       </div>
 
@@ -61,6 +62,7 @@
           type="text" 
           class="form-control form-control-sm"
           id="course_title_input"
+          oninput="checkField()"
           placeholder="Course Title">
       </div>
 
@@ -70,6 +72,7 @@
           type="number"
           class="form-control form-control-sm"
           id="units_input"
+          oninput="checkField()"
           placeholder="Units">
       </div>
     </div>
@@ -81,6 +84,7 @@
           type="number" 
           class="form-control form-control-sm"
           id="lecture_hrs_input"
+          oninput="checkField()"
           placeholder="Lecture Hours">
       </div>
 
@@ -90,6 +94,7 @@
           type="number" 
           class="form-control form-control-sm"
           id="lab_hrs_input"
+          oninput="checkField()"
           placeholder="Lab Hours">
       </div>
 
@@ -98,7 +103,8 @@
         <input 
           type="number" 
           class="form-control form-control-sm"
-          id="dept_id_input"
+          id="dept_id_input" 
+          oninput="checkField()"
           placeholder="Department ID">
       </div>
     </div>
@@ -117,8 +123,10 @@
       <div class="col-auto">
         <button  
           type="button"
+          id="add_course_btn"
           class="btn btn-outline-success btn-sm"
-          onclick="addCourse()">
+          onclick="addCourse()"
+          disabled>
             Add Course
         </button>
       </div>
