@@ -264,5 +264,40 @@ function exportTableToPDF() {
   doc.save(`enrollments[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(enrollmentEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((enrollments)=> {
+    enrollmentTable.innerHTML = "";
+
+    for(const enrollment of enrollments) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${enrollment.enrollment_id}</td>
+        <td>${enrollment.student_id}</td>
+        <td>${enrollment.section_id}</td>
+        <td>${enrollment.date_enrolled}</td>
+        <td>${enrollment.status}</td>
+        <td>${enrollment.letter_grade}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editEnrollment(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteEnrollment(this)">
+            Delete
+          </button>
+        </td>
+      `
+      enrollmentTable.append(row);
+    }
+  });
+}
+
 // Display Enrollments to the table.
 displayEnrollments();
