@@ -24,18 +24,24 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_term
-     WHERE term_code LIKE ?
+     WHERE term_code LIKE ? AND is_deleted = 0
      ORDER BY term_id DESC 
     "); 
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
   } else if($sort === "ascending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_term ORDER BY term_id ASC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_term 
+                            WHERE is_deleted = 0
+                            ORDER BY term_id ASC");
   } else if($sort === "descending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_term ORDER BY term_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_term 
+                            WHERE is_deleted = 0
+                            ORDER BY term_id DESC");
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_term ORDER BY term_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_term  
+                            WHERE is_deleted = 0
+                            ORDER BY term_id DESC");
   }
 
   $stmt->execute();
@@ -61,16 +67,18 @@ if($conn->connect_error) {
   $term_code = $_POST['term_code'];
   $start_date = $_POST['start_date'];
   $end_date = $_POST['end_date'];
+  $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_term(
                           term_code, 
                           start_date, 
-                          end_date
+                          end_date,
+                          is_deleted
                         )
-                        VALUES(?, ?, ?)");
+                        VALUES(?, ?, ?, ?)");
 
-  $stmt->bind_param("sss", $term_code, $start_date, $end_date);
+  $stmt->bind_param("sssi", $term_code, $start_date, $end_date, $is_deleted);
 
   $stmt->execute();
 
@@ -115,7 +123,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $term_id = $_DELETE['term_id'] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_term WHERE term_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_term 
+                          SET is_deleted = 1
+                          WHERE term_id = ?");
   $stmt->bind_param('i', $term_id);
   $stmt->execute();
 
