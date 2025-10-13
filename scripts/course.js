@@ -122,7 +122,6 @@ function editCourse(button) {
     })
     .then((response) => response.text())
     .then((responseText) => {
-      // alert(responseText);
       Swal.fire("Success", `${responseText}`, "success");
       displayCourses();
     });
