@@ -1,8 +1,23 @@
 const termEndpoint = "http://localhost/Enrollment-Management-System/php/term.php"
+const termCodeInput = document.querySelector('#term_code_input');
+const startDateInput = document.querySelector('#start_date_input');
+const endDateInput = document.querySelector('#end_date_input');
+const termTable = document.querySelector("#table_body_program");
+
+function checkField() {
+  const addTermBtn = document.querySelector('#add_term_btn');
+
+  if(termCodeInput.value.trim().length &&
+      startDateInput.value.trim().length &&
+      endDateInput.value.trim().length
+  ) {
+    addTermBtn.disabled = false;
+  } else {
+    addTermBtn.disabled = true;
+  }
+}
 
 function displayTerms() {
-  const termTable = document.querySelector("#table_body_program");
-
   fetch(termEndpoint)
   .then((response) => response.json())
   .then((terms)=> {
@@ -35,10 +50,6 @@ function displayTerms() {
 
 // Add new department
 function addTerm() {
-  const termCodeInput = document.querySelector('#term_code_input');
-  const startDateInput = document.querySelector('#start_date_input');
-  const endDateInput = document.querySelector('#end_date_input');
-
   fetch(termEndpoint, {
     method: "POST",
     headers: {

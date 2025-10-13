@@ -51,7 +51,8 @@
           type="text" 
           id="term_code_input"
           class="form-control form-control-sm"
-          placeholder="Term Code">
+          placeholder="Term Code"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -60,7 +61,8 @@
           type="date" 
           id="start_date_input"
           class="form-control form-control-sm"
-          placeholder="Start Date">
+          placeholder="Start Date"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -69,7 +71,8 @@
           type="date"
           id="end_date_input"
           class="form-control form-control-sm"
-          placeholder="End Date">
+          placeholder="End Date"
+          oninput="checkField()">
       </div>
     </div>
   </div>
@@ -87,8 +90,10 @@
       <div class="col-auto">
         <button  
           type="button"
+          id="add_term_btn"
           class="btn btn-outline-success btn-sm"
-          onclick="addTerm()">
+          onclick="addTerm()"
+          disabled>
             Add Term
         </button>
       </div>
