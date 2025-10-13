@@ -24,18 +24,24 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_program
-     WHERE program_name LIKE ?
+     WHERE program_name LIKE ? AND is_deleted = 0
      ORDER BY program_id DESC 
     "); 
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
   } else if($sort === "ascending") {
-   $stmt = $conn->prepare("SELECT * FROM tbl_program ORDER BY program_id ASC");
+   $stmt = $conn->prepare("SELECT * FROM tbl_program
+                          WHERE is_deleted = 0
+                          ORDER BY program_id ASC");
   } else if($sort === "descending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_program ORDER BY program_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_program
+                            WHERE is_deleted = 0
+                            ORDER BY program_id DESC");
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_program ORDER BY program_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_program
+                            WHERE is_deleted = 0
+                            ORDER BY program_id DESC");
   }
  
   $stmt->execute();
@@ -56,16 +62,18 @@ if($conn->connect_error) {
   $program_code = $_POST['program_code'];
   $program_name = $_POST['program_name'];
   $dept_id = $_POST['dept_id'];
+  $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_program(
                           program_code, 
                           program_name, 
-                          dept_id
+                          dept_id,
+                          is_deleted
                         )
-                        VALUES(?, ?, ?)");
+                        VALUES(?, ?, ?, ?)");
 
-  $stmt->bind_param("ssi", $program_code, $program_name, $dept_id);
+  $stmt->bind_param("ssii", $program_code, $program_name, $dept_id, $is_deleted);
 
   $stmt->execute();
 
@@ -110,7 +118,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $program_id = $_DELETE['program_id'] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_program WHERE program_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_program 
+                          SET is_deleted = 1
+                          WHERE program_id = ?");
   $stmt->bind_param('i', $program_id);
   $stmt->execute();
 
