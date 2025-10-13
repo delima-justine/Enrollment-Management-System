@@ -1,4 +1,13 @@
-.center-title {
-  text-align: center;
+.card-color {
+  background-color: #662222;
 }
 
+.card-color:hover {
+  background-color: #FFC107;
+  transition: background-color 0.5s;
+}
+
+.logo {
+  width: 5%;
+  height: 5%;
+}
