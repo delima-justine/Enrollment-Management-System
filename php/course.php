@@ -25,17 +25,21 @@ if($conn->connect_error) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_course
      WHERE course_title LIKE ?
+     AND is_deleted = 0
      ORDER BY course_id DESC 
     ");
 
     $course_title = "%$search%";
     $stmt->bind_param("s", $course_title);
   } else if($sort === "ascending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_course ORDER BY course_id ASC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_course WHERE is_deleted = 0 
+                            ORDER BY course_id ASC;");
   } else if($sort === "descending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_course ORDER BY course_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_course WHERE is_deleted = 0 
+                            ORDER BY course_id DESC;");
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_course ORDER BY course_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_course WHERE is_deleted = 0 
+                            ORDER BY course_id DESC;");
   }
 
   $stmt->execute();
@@ -65,11 +69,11 @@ if($conn->connect_error) {
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_course(course_code, course_title, units,
-                        lecture_hours, lab_hours, dept_id)
-                        VALUES(?, ?, ?, ?, ?, ?)");
+                        lecture_hours, lab_hours, dept_id, is_deleted)
+                        VALUES(?, ?, ?, ?, ?, ?, ?)");
 
-  $stmt->bind_param("ssiiii", 
-    $course_code, $course_title, $units, $lecture_hours, $lab_hours, $dept_id);
+  $stmt->bind_param("ssiiiii", 
+    $course_code, $course_title, $units, $lecture_hours, $lab_hours, $dept_id, 0);
 
   $stmt->execute();
 
@@ -117,7 +121,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $course_id = $_DELETE["course_id"] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_course WHERE course_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_course 
+                          SET is_deleted = 1 
+                          WHERE course_id = ?");
   $stmt->bind_param('i', $course_id);
   $stmt->execute();
 
