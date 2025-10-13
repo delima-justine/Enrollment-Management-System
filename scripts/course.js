@@ -6,6 +6,7 @@ const lectureHrsInput = document.querySelector('#lecture_hrs_input');
 const labHrsInput = document.querySelector('#lab_hrs_input');
 const departmentIdInput = document.querySelector('#dept_id_input');
 const courseTable = document.querySelector("#table_body_course");
+const courseTableContainer = document.querySelector('#course_table')
 
 function checkField() {
   const addCourseBtn = document.querySelector('#add_course_btn');
@@ -212,26 +213,38 @@ function searchCourse() {
 }
 
 function ExportTableToXLSX(type) {
-  const courseTable = document.querySelector('#course_table');
-  const file = XLSX.utils.table_to_book(courseTable, {sheet: "Courses"});
+  // Clone the original table
+  const clonedTable = courseTableContainer.cloneNode(true);
+
+  // Remove Edit and Delete columns from header
+  const headerRow = clonedTable.querySelector("thead tr");
+  headerRow.deleteCell(-1); // Delete last cell (Delete)
+  headerRow.deleteCell(-1); // Delete second last cell (Edit)
+
+  // Remove Edit and Delete cells from each row
+  const rows = clonedTable.querySelectorAll("tbody tr");
+  rows.forEach(row => {
+    row.deleteCell(-1); // Delete last cell (Delete)
+    row.deleteCell(-1); // Delete second last cell (Edit)
+  });
+
+  // Convert cleaned table to workbook
+  const file = XLSX.utils.table_to_book(clonedTable, { sheet: "Courses" });
   const dateToday = new Date().toISOString().split('T')[0];
   const ws = file.Sheets["Courses"];
 
-  // --- Auto column width calculation ---
-  const data = XLSX.utils.sheet_to_json(ws, { header: 1 }); // Convert sheet to 2D array
-
-  // Compute max width per column
+  // Auto column width
+  const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
   const colWidths = data[0].map((_, colIndex) => {
     const maxLength = data.reduce((acc, row) => {
       const cell = row[colIndex] ? row[colIndex].toString() : "";
       return Math.max(acc, cell.length);
     }, 10);
-    return { wch: maxLength + 2 }; // Add padding
+    return { wch: maxLength + 2 };
   });
-
-  // Apply calculated widths
   ws['!cols'] = colWidths;
 
+  // Export file
   XLSX.writeFile(file, `courses[${dateToday}].` + type);
 }
 
