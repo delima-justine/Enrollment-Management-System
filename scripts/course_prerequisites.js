@@ -2,6 +2,7 @@ const coursePrerequisiteEndpoint = "http://localhost/Enrollment-Management-Syste
 const courseIdInput = document.querySelector('#course_id_input');
 const prereqCourseInput = document.querySelector('#prerequisite_course_id_input');
 const coursePrerequisiteTable = document.querySelector("#table_body_course_prereq");
+const coursePrerequisiteTableContainer = document.querySelector("#course_prereq_table");
 
 function checkField() {
   const addCoursePrereqBtn = document.querySelector('#add_course_prereq_btn');
@@ -166,5 +167,71 @@ function searchCourse() {
   });
 }
 
-// Display instructors to the table.
+function ExportTableToXLSX(type) {
+  // Clone the original table
+  const clonedTable = coursePrerequisiteTableContainer.cloneNode(true);
+
+  // Remove Edit and Delete columns from header
+  const headerRow = clonedTable.querySelector("thead tr");
+  headerRow.deleteCell(-1); // Delete last cell (Delete)
+  headerRow.deleteCell(-1); // Delete second last cell (Edit)
+
+  // Remove Edit and Delete cells from each row
+  const rows = clonedTable.querySelectorAll("tbody tr");
+  rows.forEach(row => {
+    row.deleteCell(-1); // Delete last cell (Delete)
+    row.deleteCell(-1); // Delete second last cell (Edit)
+  });
+
+  // Convert cleaned table to workbook
+  const file = XLSX.utils.table_to_book(clonedTable, { sheet: "Course Prerequisites" });
+  const dateToday = new Date().toISOString().split('T')[0];
+  const ws = file.Sheets["Course Prerequisites"];
+
+  // Auto column width
+  const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const colWidths = data[0].map((_, colIndex) => {
+    const maxLength = data.reduce((acc, row) => {
+      const cell = row[colIndex] ? row[colIndex].toString() : "";
+      return Math.max(acc, cell.length);
+    }, 10);
+    return { wch: maxLength + 2 };
+  });
+  ws['!cols'] = colWidths;
+
+  // Export file
+  XLSX.writeFile(file, `course_prerequisites[${dateToday}].` + type);
+}
+
+function exportTableToPDF() {
+  const doc = new jspdf.jsPDF({ orientation: "landscape"}); // Initialize jsPDF
+  const dateToday = new Date().toISOString().split('T')[0];
+  
+  // Define which columns to include
+  const columns = [
+    { header: "Course ID", dataKey: "course_id" },
+    { header: "Prerequisite Course ID", dataKey: "prereq_course_id" }
+  ];
+
+  // Get data from your table or dynamically generate it
+  const tableData = [];
+  document.querySelectorAll("#course_prereq_table tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("td");
+    tableData.push({
+      course_id: cells[0].innerText,
+      prereq_course_id: cells[1].innerText
+    });
+  });
+
+  // Generate the table with selected columns
+  doc.autoTable({
+    columns: columns,
+    body: tableData,
+  });
+
+  // Save the PDF
+  doc.save(`course_prerequisites[${dateToday}].pdf`);
+}
+
+// Display course prerequisites to the table.
 displayPrerequisiteCourses();
