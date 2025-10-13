@@ -71,11 +71,12 @@ function addCourse() {
   })
   .then((response) => response.text())
   .then(responseText => {
-    alert(responseText);
+    Swal.fire("Success", `${responseText}`, "success");
     clearInput();
     displayCourses(); // updates the table
   }).catch (error => {
     alert('console error.');
+    console.log(error);
   })
 }
 
@@ -121,7 +122,8 @@ function editCourse(button) {
     })
     .then((response) => response.text())
     .then((responseText) => {
-      alert(responseText);
+      // alert(responseText);
+      Swal.fire("Success", `${responseText}`, "success");
       displayCourses();
     });
 
@@ -139,19 +141,29 @@ function deleteRow(button) {
   const row = button.closest('tr');
   const cells = row.querySelectorAll('td');
   const courseId = cells[0].innerHTML;
-  
-  fetch(courseEndpoint, {
-    method: 'DELETE',
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded",
-    },
-    body: `course_id=${courseId}`,
-  })
-  .then((response) => response.text())
-  .then((responseText) => {
-    alert(responseText);
-    displayCourses(); // updates course table
-  })
+
+  Swal.fire({
+    title: "Do you want to delete this data?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+    // denyButtonText: `Cancel`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(courseEndpoint, {
+        method: 'DELETE',
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded",
+        },
+        body: `course_id=${courseId}`,
+      })
+      .then((response) => response.text())
+      .then(() => {
+        Swal.fire("Deleted", "", "success");
+        displayCourses(); // updates course table
+      })
+    }
+  });
 }
 
 // Clear the input fields.
