@@ -157,8 +157,8 @@ function deleteDepartment(button) {
         body: `dept_id=${deptId}`,
       })
       .then((response) => response.text())
-      .then((responseText) => {
-        Swal.fire("Success", `${responseText}`, "success");
+      .then(() => {
+        Swal.fire("Deleted", "", "success");
         displayDepartments();
       })
     }
