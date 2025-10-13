@@ -255,5 +255,39 @@ function exportTableToPDF() {
   doc.save(`courses[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(instructorEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((instructors)=> {
+    instructorTable.innerHTML = "";
+
+    for(const instructor of instructors) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${instructor.instructor_id}</td>
+        <td>${instructor.last_name}</td>
+        <td>${instructor.first_name}</td>
+        <td>${instructor.email}</td>
+        <td>${instructor.dept_id}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editInstructor(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteInstructor(this)">
+            Delete
+          </button>
+        </td>
+      `
+      instructorTable.append(row);
+    }
+  });
+}
+
 // Display instructors to the table.
 displayInstructors();
