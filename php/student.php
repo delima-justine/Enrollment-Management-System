@@ -24,18 +24,24 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_student
-     WHERE student_no LIKE ?
+     WHERE student_no LIKE ? AND is_deleted = 0
      ORDER BY student_id DESC 
     ");
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
   } else if($sort === "ascending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_student ORDER BY student_id ASC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_student
+                            WHERE is_deleted = 0 
+                            ORDER BY student_id ASC");
   } else if($sort === "descending") {
-   $stmt = $conn->prepare("SELECT * FROM tbl_student ORDER BY student_id DESC");
+   $stmt = $conn->prepare("SELECT * FROM tbl_student
+                            WHERE is_deleted = 0 
+                            ORDER BY student_id DESC");
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_student ORDER BY student_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_student
+                            WHERE is_deleted = 0 
+                            ORDER BY student_id DESC");
   }
 
   $stmt->execute();
@@ -64,15 +70,16 @@ if($conn->connect_error) {
   $gender = $_POST['gender'];
   $year_level = $_POST['year_level'];
   $program_id = $_POST['program_id'];
+  $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_student(student_no, last_name, first_name, email, gender,
-                        year_level, program_id )
-                        VALUES(?, ?, ?, ?, ?, ?, ?)");
+                        year_level, program_id, is_deleted)
+                        VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 
-  $stmt->bind_param("sssssii", 
+  $stmt->bind_param("sssssiii", 
     $student_no, $last_name, $first_name, $email, $gender, $year_level,
-      $program_id);
+      $program_id, $is_deleted);
 
   $stmt->execute();
 
@@ -129,7 +136,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $student_id = $_DELETE["student_id"] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_student WHERE student_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_student 
+                          SET is_deleted = 1
+                          WHERE student_id = ?");
   $stmt->bind_param('i', $student_id);
   $stmt->execute();
 
