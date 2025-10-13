@@ -275,5 +275,42 @@ function exportTableToPDF() {
   doc.save(`students[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(studentEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((students)=> {
+    studTable.innerHTML = "";
+
+    for(const student of students) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${student.student_id}</td>
+        <td>${student.student_no}</td>
+        <td>${student.last_name}</td>
+        <td>${student.first_name}</td>
+        <td>${student.email}</td>
+        <td>${student.gender}</td>
+        <td>${student.year_level}</td>
+        <td>${student.program_id}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editStudent(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteStudent(this)">
+            Delete
+          </button>
+        </td>
+      `
+      studTable.append(row);
+    }
+  });
+}
+
 // Display students
 displayStudents();
