@@ -18,7 +18,21 @@ if($conn->connect_error) {
 } else if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $response = [];
 
-  $stmt = $conn->prepare("SELECT * FROM tbl_term");
+  $search = isset($_GET['search']) ? trim($_GET['search']): '';
+
+  if(!empty($search)) {
+    $stmt = $conn->prepare("
+     SELECT * FROM tbl_term
+     WHERE term_code LIKE ?
+     ORDER BY term_id DESC 
+    "); 
+
+    $search_param = "%$search%";
+    $stmt->bind_param("s", $search_param);
+  } else {
+    $stmt = $conn->prepare("SELECT * FROM tbl_term ORDER BY term_id DESC");
+  }
+
   $stmt->execute();
 
   if(!$stmt) {

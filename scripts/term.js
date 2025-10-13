@@ -139,5 +139,43 @@ function deleteTerm(button) {
   })
 }
 
-// Display instructors to the table.
+function searchTerm() {
+  const searchInput = document.querySelector('#search_input');
+
+  fetch(termEndpoint + `?search=${encodeURIComponent(searchInput.value)}`)
+  .then((response) => response.json())
+  .then((terms)=> {
+    if(!terms || terms.length === 0) {
+      termTable.innerHTML = "No Data Found.";
+      return;
+    }
+
+    termTable.innerHTML = "";
+
+    for(const term of terms) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${term.term_id}</td>
+        <td>${term.term_code}</td>
+        <td>${term.start_date}</td>
+        <td>${term.end_date}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editTerm(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteTerm(this)">
+            Delete
+          </button>
+        </td>
+      `
+      termTable.append(row);
+    }
+  });
+}
+
+// Display terms to the table.
 displayTerms();
