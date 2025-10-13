@@ -1,8 +1,24 @@
 const programEndpoint = "http://localhost/Enrollment-Management-System/php/program.php"
+const programCodeInput = document.querySelector('#program_code_input');
+const programNameInput = document.querySelector('#program_name_input');
+const departmentIdInput = document.querySelector('#dept_id_input');
+const programTable = document.querySelector("#table_body_program");
+const programTableContainer = document.querySelector("#program_table");
+
+function checkField() {
+  const addProgramBtn = document.querySelector('#add_program_btn');
+
+  if(programCodeInput.value.trim().length &&
+      programNameInput.value.trim().length &&
+      departmentIdInput.value.trim().length
+  ) {
+    addProgramBtn.disabled = false;
+  } else {
+    addProgramBtn.disabled = true;
+  }
+}
 
 function displayPrograms() {
-  const programTable = document.querySelector("#table_body_program");
-
   fetch(programEndpoint)
   .then((response) => response.json())
   .then((programs)=> {
@@ -35,10 +51,6 @@ function displayPrograms() {
 
 // Add new department
 function addProgram() {
-  const programCodeInput = document.querySelector('#program_code_input');
-  const programNameInput = document.querySelector('#program_name_input');
-  const departmentIdInput = document.querySelector('#dept_id_input');
-
   fetch(programEndpoint, {
     method: "POST",
     headers: {

@@ -51,7 +51,8 @@
           type="text" 
           id="program_code_input"
           class="form-control form-control-sm"
-          placeholder="Program Code">
+          placeholder="Program Code"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -60,7 +61,8 @@
           type="text" 
           id="program_name_input"
           class="form-control form-control-sm"
-          placeholder="Program Name">
+          placeholder="Program Name"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -69,7 +71,8 @@
           type="number"
           id="dept_id_input"
           class="form-control form-control-sm"
-          placeholder="Department ID">
+          placeholder="Department ID"
+          oninput="checkField()">
       </div>
     </div>
   </div>
@@ -87,8 +90,10 @@
       <div class="col-auto">
         <button  
           type="button"
+          id="add_program_btn"
           class="btn btn-outline-success btn-sm"
-          onclick="addProgram()">
+          onclick="addProgram()"
+          disabled>
             Add Program
         </button>
       </div>
