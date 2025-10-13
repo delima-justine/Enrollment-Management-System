@@ -248,5 +248,38 @@ function exportTableToPDF() {
   doc.save(`programs[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(programEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((programs)=> {
+    programTable.innerHTML = "";
+
+    for(const program of programs) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${program.program_id}</td>
+        <td>${program.program_code}</td>
+        <td>${program.program_name}</td>
+        <td>${program.dept_id}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editProgram(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteProgram(this)">
+            Delete
+          </button>
+        </td>
+      `
+      programTable.append(row);
+    }
+  });
+}
+
 // Display instructors to the table.
 displayPrograms();
