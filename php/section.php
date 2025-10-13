@@ -24,18 +24,24 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_section
-     WHERE section_code LIKE ?
+     WHERE section_code LIKE ? AND is_deleted = 0
      ORDER BY section_id DESC 
     "); 
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
   } else if($sort === "ascending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_section ORDER BY section_id ASC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_section
+                            WHERE is_deleted = 0 
+                            ORDER BY section_id ASC");
   } else if($sort === "descending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_section ORDER BY section_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_section
+                            WHERE is_deleted = 0 
+                            ORDER BY section_id DESC");
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_section ORDER BY section_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_section
+                            WHERE is_deleted = 0 
+                            ORDER BY section_id DESC");
   }
   
   $stmt->execute();
@@ -69,6 +75,7 @@ if($conn->connect_error) {
   $end_time = $_POST['end_time'];
   $room_id = $_POST['room_id'];
   $max_capacity = $_POST['max_capacity'];
+  $is_deleted = 0;
  
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_section(
@@ -80,13 +87,14 @@ if($conn->connect_error) {
                         start_time,
                         end_time,
                         room_id,
-                        max_capacity
+                        max_capacity,
+                        is_deleted
                         )
-                        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-  $stmt->bind_param("siiisssii", 
+  $stmt->bind_param("siiisssiii", 
     $section_code, $course_id, $term_id, $instructor_id, $day_pattern,
-    $start_time, $end_time, $room_id, $max_capacity
+    $start_time, $end_time, $room_id, $max_capacity, $is_deleted
   );
 
   $stmt->execute();
@@ -143,7 +151,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $section_id = $_DELETE["section_id"] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_section WHERE section_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_section 
+                          SET is_deleted = 1
+                          WHERE section_id = ?");
   $stmt->bind_param('i', $section_id);
   $stmt->execute();
 
