@@ -155,5 +155,43 @@ function deleteStudent(button) {
   })
 }
 
+function searchStudentId() {
+  const searchInput = document.querySelector('#search_input');
+
+  fetch(studentEndpoint + `?search=${encodeURIComponent(searchInput.value)}`)
+  .then((response) => response.json())
+  .then((students)=> {
+    
+    studTable.innerHTML = "";
+
+    for(const student of students) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${student.student_id}</td>
+        <td>${student.student_no}</td>
+        <td>${student.last_name}</td>
+        <td>${student.first_name}</td>
+        <td>${student.email}</td>
+        <td>${student.gender}</td>
+        <td>${student.year_level}</td>
+        <td>${student.program_id}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editStudent(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteStudent(this)">
+            Delete
+          </button>
+        </td>
+      `
+      studTable.append(row);
+    }
+  });
+}
+
 // Display students
 displayStudents();
