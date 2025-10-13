@@ -132,6 +132,28 @@ function editCourse(button) {
     // Edit mode
     button.textContent = "Save";
     cells[0].focus();
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      icon: "info",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      customClass: {
+        popup: 'colored-toast'
+      },
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
+
+    Toast.fire({
+      icon: 'info',
+      title: 'Edit Mode Activated'
+    });
+
     updatedRow.length = 0; // clear the array.
   }
 }
