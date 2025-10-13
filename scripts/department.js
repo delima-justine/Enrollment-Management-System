@@ -58,7 +58,7 @@ function addDepartment() {
   })
   .then((response) => response.text())
   .then(responseText => {
-    alert(responseText);
+    Swal.fire("Success", `${responseText}`, "success");
     displayDepartments(); // updates the table
   }).catch (error => {
     alert('console error.');
@@ -101,7 +101,7 @@ function editDepartment(button) {
     })
     .then((response) => response.text())
     .then((responseText) => {
-      alert(responseText);
+      Swal.fire("Success", `${responseText}`, "success");
       displayDepartments();
     });
 
@@ -110,6 +110,28 @@ function editDepartment(button) {
     // Edit mode
     button.textContent = "Save";
     cells[0].focus();
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      icon: "info",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      customClass: {
+        popup: 'colored-toast'
+      },
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
+
+    Toast.fire({
+      icon: 'info',
+      title: 'Edit Mode Activated'
+    });
+
     updatedRow.length = 0; // clear the array.
   }
 }
@@ -119,19 +141,28 @@ function deleteDepartment(button) {
   const row = button.closest('tr');
   const cells = row.querySelectorAll('td');
   const deptId = cells[0].innerHTML;
-  
-  fetch(departmentEndpoint, {
-    method: 'DELETE',
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded",
-    },
-    body: `dept_id=${deptId}`,
-  })
-  .then((response) => response.text())
-  .then((responseText) => {
-    alert(responseText);
-    displayDepartments();
-  })
+
+  Swal.fire({
+    title: "Do you want to delete this data?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(departmentEndpoint, {
+        method: 'DELETE',
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded",
+        },
+        body: `dept_id=${deptId}`,
+      })
+      .then((response) => response.text())
+      .then((responseText) => {
+        Swal.fire("Success", `${responseText}`, "success");
+        displayDepartments();
+      })
+    }
+  });
 }
 
 function searchDepartment() {
