@@ -24,18 +24,24 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_instructor
-     WHERE first_name LIKE ? OR last_name LIKE ?
+     WHERE first_name LIKE ? OR last_name LIKE ? AND is_deleted = 0
      ORDER BY instructor_id DESC 
     ");
 
     $search_param = "%$search%";
     $stmt->bind_param("ss", $search_param, $search_param);
   } else if($sort === "ascending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_instructor ORDER BY instructor_id ASC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_instructor 
+                            WHERE is_deleted = 0
+                            ORDER BY instructor_id ASC");
   } else if($sort === "descending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_instructor ORDER BY instructor_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_instructor 
+                            WHERE is_deleted = 0
+                            ORDER BY instructor_id DESC");
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_instructor ORDER BY instructor_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_instructor 
+                            WHERE is_deleted = 0
+                            ORDER BY instructor_id DESC");
   }
 
   $stmt->execute();
@@ -58,17 +64,20 @@ if($conn->connect_error) {
   $first_name = $_POST['first_name'];
   $email = $_POST['email'];
   $dept_id = $_POST['dept_id'];
+  $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_instructor(
                           last_name, 
                           first_name, 
                           email, 
-                          dept_id
+                          dept_id,
+                          is_deleted
                         )
-                        VALUES(?, ?, ?, ?)");
+                        VALUES(?, ?, ?, ?, ?)");
 
-  $stmt->bind_param("sssi", $last_name, $first_name, $email, $dept_id);
+  $stmt->bind_param("sssii", $last_name, $first_name, $email, 
+                          $dept_id, $is_deleted);
 
   $stmt->execute();
 
@@ -116,7 +125,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $instructor_id = $_DELETE["instructor_id"] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_instructor WHERE instructor_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_instructor 
+                          SET is_deleted = 1
+                          WHERE instructor_id = ?");
   $stmt->bind_param('i', $instructor_id);
   $stmt->execute();
 
