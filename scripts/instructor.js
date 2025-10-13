@@ -65,7 +65,7 @@ function addInstructor() {
   })
   .then((response) => response.text())
   .then(responseText => {
-    alert(responseText);
+    Swal.fire("Success", `${responseText}`, "success");
     displayInstructors(); // updates the table
   }).catch (error => {
     alert('console error.');
@@ -111,7 +111,7 @@ function editInstructor(button) {
     })
     .then((response) => response.text())
     .then((responseText) => {
-      alert(responseText);
+      Swal.fire("Success", `${responseText}`, "success");
       displayInstructors();
     });
 
@@ -120,6 +120,28 @@ function editInstructor(button) {
     // Edit mode
     button.textContent = "Save";
     cells[0].focus();
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      icon: "info",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      customClass: {
+        popup: 'colored-toast'
+      },
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
+
+    Toast.fire({
+      icon: 'info',
+      title: 'Edit Mode Activated'
+    });
+
     updatedRow.length = 0; // clear the array.
   }
 }
@@ -129,19 +151,28 @@ function deleteInstructor(button) {
   const row = button.closest('tr');
   const cells = row.querySelectorAll('td');
   const instructorId= cells[0].innerHTML;
-  
-  fetch(instructorEndpoint, {
-    method: 'DELETE',
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded",
-    },
-    body: `instructor_id=${instructorId}`,
-  })
-  .then((response) => response.text())
-  .then((responseText) => {
-    alert(responseText);
-    displayInstructors();
-  })
+
+  Swal.fire({
+    title: "Do you want to delete this data?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(instructorEndpoint, {
+        method: 'DELETE',
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded",
+        },
+        body: `instructor_id=${instructorId}`,
+      })
+      .then((response) => response.text())
+      .then(() => {
+        Swal.fire("Deleted", "", "success");
+        displayInstructors();
+      })
+    }
+  });
 }
 
 function searchInstructor() {
