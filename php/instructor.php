@@ -23,12 +23,12 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_instructor
-     WHERE first_name LIKE ?
+     WHERE first_name LIKE ? OR last_name LIKE ?
      ORDER BY instructor_id DESC 
     ");
 
-    $first_name = "%$search%";
-    $stmt->bind_param("s", $first_name);
+    $search_param = "%$search%";
+    $stmt->bind_param("ss", $search_param, $search_param);
   } else {
     $stmt = $conn->prepare("SELECT * FROM tbl_instructor ORDER BY instructor_id DESC");
   }
