@@ -161,6 +161,10 @@ function searchStudentId() {
   fetch(studentEndpoint + `?search=${encodeURIComponent(searchInput.value)}`)
   .then((response) => response.json())
   .then((students)=> {
+    if(!students || students.length === 0) {
+      studTable.innerHTML = "No Data Found.";
+      return;
+    }
     
     studTable.innerHTML = "";
 
