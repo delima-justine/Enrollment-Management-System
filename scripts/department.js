@@ -239,5 +239,37 @@ function exportTableToPDF() {
   doc.save(`departments[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(departmentEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((departments)=> {
+    deptTable.innerHTML = "";
+
+    for(const department of departments) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${department.dept_id}</td>
+        <td>${department.dept_code}</td>
+        <td>${department.dept_name}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editDepartment(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteDepartment(this)">
+            Delete
+          </button>
+        </td>
+      `
+      deptTable.append(row);
+    }
+  });
+}
+
 // Display departments to the table.
 displayDepartments();
