@@ -5,6 +5,7 @@ const dateEnrolledInput = document.querySelector('#date_enrolled_input');
 const statusInput = document.querySelector('#status_input');
 const letterGradeInput = document.querySelector('#letter_grade_input');
 const enrollmentTable = document.querySelector("#table_body_enrollment");
+const enrollmentTableContainer = document.querySelector("#enrollment_table");
 
 function checkField() {
   const addEnrollmentBtn = document.querySelector('#add_enrollment_btn');
@@ -187,6 +188,80 @@ function searchEnrollment() {
       enrollmentTable.append(row);
     }
   });
+}
+
+function ExportTableToXLSX(type) {
+  // Clone the original table
+  const clonedTable = enrollmentTableContainer.cloneNode(true);
+
+  // Remove Edit and Delete columns from header
+  const headerRow = clonedTable.querySelector("thead tr");
+  headerRow.deleteCell(-1); // Delete last cell (Delete)
+  headerRow.deleteCell(-1); // Delete second last cell (Edit)
+
+  // Remove Edit and Delete cells from each row
+  const rows = clonedTable.querySelectorAll("tbody tr");
+  rows.forEach(row => {
+    row.deleteCell(-1); // Delete last cell (Delete)
+    row.deleteCell(-1); // Delete second last cell (Edit)
+  });
+
+  // Convert cleaned table to workbook
+  const file = XLSX.utils.table_to_book(clonedTable, { sheet: "Enrollments" });
+  const dateToday = new Date().toISOString().split('T')[0];
+  const ws = file.Sheets["Enrollments"];
+
+  // Auto column width
+  const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const colWidths = data[0].map((_, colIndex) => {
+    const maxLength = data.reduce((acc, row) => {
+      const cell = row[colIndex] ? row[colIndex].toString() : "";
+      return Math.max(acc, cell.length);
+    }, 10);
+    return { wch: maxLength + 2 };
+  });
+  ws['!cols'] = colWidths;
+
+  // Export file
+  XLSX.writeFile(file, `enrollments[${dateToday}].` + type);
+}
+
+function exportTableToPDF() {
+  const doc = new jspdf.jsPDF({ orientation: "landscape"}); // Initialize jsPDF
+  const dateToday = new Date().toISOString().split('T')[0];
+  
+  // Define which columns to include
+  const columns = [
+    { header: "#", dataKey: "enrollment_id" },
+    { header: "Student ID", dataKey: "student_id" },
+    { header: "Section ID", dataKey: "section_id" },
+    { header: "Date Enrolled", dataKey: "date_enrolled" },
+    { header: "Status", dataKey: "status" },
+    { header: "Letter Grade", dataKey: "letter_grade" },
+  ];
+
+  // Get data from your table or dynamically generate it
+  const tableData = [];
+  document.querySelectorAll("#enrollment_table tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("td");
+    tableData.push({
+      enrollment_id: cells[0].innerText,
+      student_id: cells[1].innerText,
+      section_id: cells[2].innerText,
+      date_enrolled: cells[3].innerText,
+      status: cells[4].innerText,
+      letter_grade: cells[5].innerText
+    });
+  });
+
+  // Generate the table with selected columns
+  doc.autoTable({
+    columns: columns,
+    body: tableData,
+  });
+
+  // Save the PDF
+  doc.save(`enrollments[${dateToday}].pdf`);
 }
 
 // Display Enrollments to the table.
