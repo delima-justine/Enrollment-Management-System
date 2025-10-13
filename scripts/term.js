@@ -246,5 +246,38 @@ function exportTableToPDF() {
   doc.save(`terms[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(termEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((terms)=> {
+    termTable.innerHTML = "";
+
+    for(const term of terms) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${term.term_id}</td>
+        <td>${term.term_code}</td>
+        <td>${term.start_date}</td>
+        <td>${term.end_date}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editTerm(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteTerm(this)">
+            Delete
+          </button>
+        </td>
+      `
+      termTable.append(row);
+    }
+  });
+}
+
 // Display terms to the table.
 displayTerms();

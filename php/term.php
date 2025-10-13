@@ -19,6 +19,7 @@ if($conn->connect_error) {
   $response = [];
 
   $search = isset($_GET['search']) ? trim($_GET['search']): '';
+  $sort = isset($_GET['sort']) ? trim($_GET['sort']): '';
 
   if(!empty($search)) {
     $stmt = $conn->prepare("
@@ -29,6 +30,10 @@ if($conn->connect_error) {
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
+  } else if($sort === "ascending") {
+    $stmt = $conn->prepare("SELECT * FROM tbl_term ORDER BY term_id ASC");
+  } else if($sort === "descending") {
+    $stmt = $conn->prepare("SELECT * FROM tbl_term ORDER BY term_id DESC");
   } else {
     $stmt = $conn->prepare("SELECT * FROM tbl_term ORDER BY term_id DESC");
   }
