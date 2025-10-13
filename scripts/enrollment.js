@@ -1,8 +1,28 @@
 const enrollmentEndpoint = "http://localhost/Enrollment-Management-System/php/enrollment.php"
+const studentIdInput = document.querySelector('#student_id_input');
+const sectionIdInput = document.querySelector('#section_id_input');
+const dateEnrolledInput = document.querySelector('#date_enrolled_input');
+const statusInput = document.querySelector('#status_input');
+const letterGradeInput = document.querySelector('#letter_grade_input');
+
+const enrollmentTable = document.querySelector("#table_body_enrollment");
+
+function checkField() {
+  const addEnrollmentBtn = document.querySelector('#add_enrollment_btn');
+
+  if(studentIdInput.value.trim().length &&
+      sectionIdInput.value.trim().length &&
+      dateEnrolledInput.value.trim().length &&
+      statusInput.value.trim().length &&
+      letterGradeInput.value.trim().length
+  ) {
+    addEnrollmentBtn .disabled = false;
+  } else {
+    addEnrollmentBtn .disabled = true;
+  }
+}
 
 function displayEnrollments() {
-  const enrollmentTable = document.querySelector("#table_body_enrollment");
-
   fetch(enrollmentEndpoint)
   .then((response) => response.json())
   .then((enrollments)=> {
@@ -37,12 +57,6 @@ function displayEnrollments() {
 
 // Add new department
 function addEnrollment() {
-  const studentIdInput = document.querySelector('#student_id_input');
-  const sectionIdInput = document.querySelector('#section_id_input');
-  const dateEnrolledInput = document.querySelector('#date_enrolled_input');
-  const statusInput = document.querySelector('#status_input');
-  const letterGradeInput = document.querySelector('#letter_grade_input');
-
   fetch(enrollmentEndpoint, {
     method: "POST",
     headers: {

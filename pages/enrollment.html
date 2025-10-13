@@ -52,7 +52,8 @@
           type="number" 
           class="form-control form-control-sm"
           id="student_id_input"
-          placeholder="Student ID">
+          placeholder="Student ID"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -61,7 +62,8 @@
           type="number" 
           class="form-control form-control-sm"
           id="section_id_input"
-          placeholder="Section ID">
+          placeholder="Section ID"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -70,7 +72,8 @@
           type="date"
           class="form-control form-control-sm"
           id="date_enrolled_input"
-          placeholder="Date Enrolled">
+          placeholder="Date Enrolled"
+          oninput="checkField()">
       </div>
     </div>
 
@@ -81,7 +84,8 @@
           type="text" 
           class="form-control form-control-sm"
           id="status_input"
-          placeholder="Status">
+          placeholder="Status"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -90,7 +94,8 @@
           type="text" 
           class="form-control form-control-sm"
           id="letter_grade_input"
-          placeholder="Letter Grade">
+          placeholder="Letter Grade"
+          oninput="checkField()">
       </div>
     </div>
   </div>
@@ -108,8 +113,10 @@
       <div class="col-auto">
         <button  
           type="button"
+          id="add_enrollment_btn"
           class="btn btn-outline-success btn-sm"
-          onclick="addEnrollment()">
+          onclick="addEnrollment()"
+          disabled>
             Add Enrollment
         </button>
       </div>
