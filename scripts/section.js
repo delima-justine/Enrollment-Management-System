@@ -209,5 +209,87 @@ function searchSection() {
   });
 }
 
+function ExportTableToXLSX(type) {
+  // Clone the original table
+  const clonedTable = sectionTableContainer.cloneNode(true);
+
+  // Remove Edit and Delete columns from header
+  const headerRow = clonedTable.querySelector("thead tr");
+  headerRow.deleteCell(-1); // Delete last cell (Delete)
+  headerRow.deleteCell(-1); // Delete second last cell (Edit)
+
+  // Remove Edit and Delete cells from each row
+  const rows = clonedTable.querySelectorAll("tbody tr");
+  rows.forEach(row => {
+    row.deleteCell(-1); // Delete last cell (Delete)
+    row.deleteCell(-1); // Delete second last cell (Edit)
+  });
+
+  // Convert cleaned table to workbook
+  const file = XLSX.utils.table_to_book(clonedTable, { sheet: "Sections" });
+  const dateToday = new Date().toISOString().split('T')[0];
+  const ws = file.Sheets["Sections"];
+
+  // Auto column width
+  const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const colWidths = data[0].map((_, colIndex) => {
+    const maxLength = data.reduce((acc, row) => {
+      const cell = row[colIndex] ? row[colIndex].toString() : "";
+      return Math.max(acc, cell.length);
+    }, 10);
+    return { wch: maxLength + 2 };
+  });
+  ws['!cols'] = colWidths;
+
+  // Export file
+  XLSX.writeFile(file, `sections[${dateToday}].` + type);
+}
+
+function exportTableToPDF() {
+  const doc = new jspdf.jsPDF({ orientation: "landscape"}); // Initialize jsPDF
+  const dateToday = new Date().toISOString().split('T')[0];
+  
+  // Define which columns to include
+  const columns = [
+    { header: "#", dataKey: "section_id" },
+    { header: "Section Code", dataKey: "section_code" },
+    { header: "Course ID", dataKey: "course_id" },
+    { header: "Term ID", dataKey: "term_id" },
+    { header: "Instructor ID", dataKey: "instructor_id" },
+    { header: "Day", dataKey: "day" },
+    { header: "Start Time", dataKey: "start_time" },
+    { header: "End Time ", dataKey: "end_time" },
+    { header: "Room ID", dataKey: "room_id" },
+    { header: "Max Capacity", dataKey: "max_capacity" },
+  ];
+
+  // Get data from your table or dynamically generate it
+  const tableData = [];
+  document.querySelectorAll("#section_table tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("td");
+    tableData.push({
+      section_id: cells[0].innerText,
+      section_code: cells[1].innerText,
+      course_id: cells[2].innerText, 
+      term_id: cells[3].innerText,
+      instructor_id: cells[4].innerText,
+      day: cells[5].innerText,
+      start_time: cells[6].innerText,
+      end_time: cells[7].innerText,
+      room_id: cells[8].innerText,
+      max_capacity: cells[9].innerText,
+    });
+  });
+
+  // Generate the table with selected columns
+  doc.autoTable({
+    columns: columns,
+    body: tableData,
+  });
+
+  // Save the PDF
+  doc.save(`sections[${dateToday}].pdf`);
+}
+
 // Display Sections
 displaySections();
