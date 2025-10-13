@@ -1,8 +1,21 @@
 const coursePrerequisiteEndpoint = "http://localhost/Enrollment-Management-System/php/course_prerequisite.php"
+const courseIdInput = document.querySelector('#course_id_input');
+const prereqCourseInput = document.querySelector('#prerequisite_course_id_input');
+const coursePrerequisiteTable = document.querySelector("#table_body_course_prereq");
+
+function checkField() {
+  const addCoursePrereqBtn = document.querySelector('#add_course_prereq_btn');
+
+  if(courseIdInput.value.trim().length &&
+      prereqCourseInput.value.trim().length
+  ) {
+    addCoursePrereqBtn.disabled = false;
+  } else {
+    addCoursePrereqBtn.disabled = true;
+  }
+}
 
 function displayPrerequisiteCourses() {
-  const coursePrerequisiteTable = document.querySelector("#table_body_course_prereq");
-
   fetch(coursePrerequisiteEndpoint)
   .then((response) => response.json())
   .then((courses)=> {
@@ -33,9 +46,6 @@ function displayPrerequisiteCourses() {
 
 // Add new dourse prereq
 function addCoursePrerequisite() {
-  const courseIdInput = document.querySelector('#course_id_input');
-  const prereqCourseInput = document.querySelector('#prerequisite_course_id_input');
-
   fetch(coursePrerequisiteEndpoint, {
     method: "POST",
     headers: {
