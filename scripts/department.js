@@ -1,8 +1,22 @@
 const departmentEndpoint = "http://localhost/Enrollment-Management-System/php/department.php"
+const deptCodeInput = document.querySelector('#department_code_input');
+const deptNameInput = document.querySelector('#department_name_input');
+const deptTable = document.querySelector("#table_body_dept");
+const deptTableContainer = document.querySelector('#dept_table');
+
+function checkField() {
+  const addDepartmentBtn = document.querySelector('#add_dept_btn');
+
+  if(deptCodeInput.value.trim().length &&
+      deptNameInput.value.trim().length
+  ) {
+    addDepartmentBtn.disabled = false;
+  } else {
+    addDepartmentBtn.disabled = true;
+  }
+}
 
 function displayDepartments() {
-  const deptTable = document.querySelector("#table_body_dept");
-
   fetch(departmentEndpoint)
   .then((response) => response.json())
   .then((departments)=> {
@@ -34,9 +48,6 @@ function displayDepartments() {
 
 // Add new department
 function addDepartment() {
-  const deptCodeInput = document.querySelector('#department_code_input');
-  const deptNameInput = document.querySelector('#department_name_input');
-
   fetch(departmentEndpoint, {
     method: "POST",
     headers: {
