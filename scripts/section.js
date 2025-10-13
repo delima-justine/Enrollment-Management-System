@@ -1,8 +1,35 @@
 const sectionEndpoint = "http://localhost/Enrollment-Management-System/php/section.php";
+const sectionCodeInput = document.querySelector('#section_code_input');
+const courseIdInput = document.querySelector('#course_id_input');
+const termIdInput= document.querySelector('#term_id_input'); 
+const instructorIdInput = document.querySelector('#instructor_id_input');
+const dayPatternInput = document.querySelector('#day_input');
+const startTimeInput = document.querySelector('#start_time_input');
+const endTimeInput = document.querySelector('#end_time_input');
+const roomIdInput = document.querySelector('#room_id_input');
+const maxCapacityInput = document.querySelector('#max_capacity_input');
+const sectionTable = document.querySelector("#table_body_section");
+const sectionTableContainer = document.querySelector("#section_table");
+
+function checkField() {
+  const addSectionBtn = document.querySelector('#add_section_btn');
+
+  if(sectionCodeInput.value.trim().length &&
+      courseIdInput.value.trim().length &&
+      termIdInput.value.trim().length &&
+      instructorIdInput .value.trim().length &&
+      dayPatternInput.value.trim().length &&
+      endTimeInput.value.trim().length &&
+      roomIdInput.value.trim().length &&
+      maxCapacityInput.value.trim().length
+  ) {
+    addSectionBtn.disabled = false;
+  } else {
+    addSectionBtn.disabled = true;
+  }
+}
 
 function displaySections() {
-  const sectionTable = document.querySelector("#table_body_section");
-
   fetch(sectionEndpoint)
   .then((response) => response.json())
   .then((sections)=> {
@@ -40,16 +67,6 @@ function displaySections() {
 }
 
 function addSection() {
-  const sectionCodeInput = document.querySelector('#section_code_input');
-  const courseIdInput = document.querySelector('#course_id_input');
-  const termIdInput= document.querySelector('#term_id_input'); 
-  const instructorIdInput = document.querySelector('#instructor_id_input');
-  const dayPatternInput = document.querySelector('#day_input');
-  const startTimeInput = document.querySelector('#start_time_input');
-  const endTimeInput = document.querySelector('#end_time_input');
-  const roomIdInput = document.querySelector('#room_id_input');
-  const maxCapacityInput = document.querySelector('#max_capacity_input');
-
   fetch(sectionEndpoint, {
     method: "POST",
     headers: {

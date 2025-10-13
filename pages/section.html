@@ -53,7 +53,8 @@
           type="text" 
           id="section_code_input"
           class="form-control form-control-sm"
-          placeholder="Section Code">
+          placeholder="Section Code"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -62,7 +63,8 @@
           type="number" 
           id="course_id_input"
           class="form-control form-control-sm"
-          placeholder="Course ID">
+          placeholder="Course ID"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -71,7 +73,8 @@
           type="number" 
           id="term_id_input"
           class="form-control form-control-sm"
-          placeholder="Term ID">
+          placeholder="Term ID"
+          oninput="checkField()">
       </div>
     </div>
 
@@ -82,7 +85,8 @@
           type="number" 
           id="instructor_id_input"
           class="form-control form-control-sm"
-          placeholder="Instructor ID">
+          placeholder="Instructor ID"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -91,7 +95,8 @@
           type="text" 
           id="day_input"
           class="form-control form-control-sm"
-          placeholder="Day">
+          placeholder="Day"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -100,7 +105,8 @@
           type="time" 
           id="start_time_input"
           class="form-control form-control-sm"
-          placeholder="Department Name">
+          placeholder="Department Name"
+          oninput="checkField()">
       </div>
     </div>
 
@@ -111,7 +117,8 @@
           type="time" 
           id="end_time_input"
           class="form-control form-control-sm"
-          placeholder="End Time">
+          placeholder="End Time"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -120,7 +127,8 @@
           type="number" 
           id="room_id_input"
           class="form-control form-control-sm"
-          placeholder="Room ID">
+          placeholder="Room ID"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -129,7 +137,8 @@
           type="number" 
           id="max_capacity_input"
           class="form-control form-control-sm"
-          placeholder="Max Capacity">
+          placeholder="Max Capacity"
+          oninput="checkField()">
       </div>
     </div>
   </div>
@@ -139,7 +148,7 @@
       <div class="col-auto">
         <input 
           type="text"
-          placeholder="Search course code"
+          placeholder="Search section code"
           onInput
           class="form-control form-control-sm"/>
       </div>
@@ -147,8 +156,10 @@
       <div class="col-auto">
         <button  
           type="button"
+          id="add_section_btn"
           class="btn btn-outline-success btn-sm"
-          onclick="addSection()">
+          onclick="addSection()"
+          disabled>
             Add Course
         </button>
       </div>
