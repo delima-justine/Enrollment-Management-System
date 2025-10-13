@@ -66,6 +66,7 @@ if($conn->connect_error) {
   $lecture_hours = $_POST['lecture_hours'];
   $lab_hours = $_POST['lab_hours'];
   $dept_id = $_POST['dept_id'];
+  $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_course(course_code, course_title, units,
@@ -73,7 +74,8 @@ if($conn->connect_error) {
                         VALUES(?, ?, ?, ?, ?, ?, ?)");
 
   $stmt->bind_param("ssiiiii", 
-    $course_code, $course_title, $units, $lecture_hours, $lab_hours, $dept_id, 0);
+    $course_code, $course_title, $units, $lecture_hours, $lab_hours, 
+      $dept_id, $is_deleted);
 
   $stmt->execute();
 

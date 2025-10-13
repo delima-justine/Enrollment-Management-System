@@ -60,11 +60,12 @@ if($conn->connect_error) {
 } else if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $dept_code = $_POST['dept_code'] ?? "";
   $dept_name = $_POST['dept_name'] ?? "";
+  $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO tbl_department(dept_code, dept_name, is_deleted)
                         VALUES(?, ?, ?)");
 
-  $stmt->bind_param("ssi", $dept_code, $dept_name, 0);
+  $stmt->bind_param("ssi", $dept_code, $dept_name, $is_deleted);
 
   $stmt->execute();
 
