@@ -24,18 +24,24 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_enrollment
-     WHERE student_id LIKE ?
+     WHERE student_id LIKE ? AND is_deleted = 0
      ORDER BY student_id DESC 
     "); 
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
   } else if($sort === "ascending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_enrollment ORDER BY enrollment_id ASC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_enrollment 
+                            WHERE is_deleted = 0
+                            ORDER BY enrollment_id ASC");
   } else if($sort === "descending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_enrollment ORDER BY enrollment_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_enrollment 
+                            WHERE is_deleted = 0
+                            ORDER BY enrollment_id DESC");
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_enrollment ORDER BY enrollment_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_enrollment 
+                            WHERE is_deleted = 0
+                            ORDER BY enrollment_id DESC");
   }
 
   $stmt->execute();
@@ -60,6 +66,7 @@ if($conn->connect_error) {
   $date_enrolled = $_POST['date_enrolled'];
   $status = $_POST['status'];
   $letter_grade = $_POST['letter_grade'];
+  $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_enrollment(
@@ -67,11 +74,12 @@ if($conn->connect_error) {
                         section_id, 
                         date_enrolled, 
                         status, 
-                        letter_grade)
-                        VALUES(?, ?, ?, ?, ?)");
+                        letter_grade,
+                        is_deleted)
+                        VALUES(?, ?, ?, ?, ?, ?)");
 
-  $stmt->bind_param("iisss", 
-    $student_id, $section_id, $date_enrolled, $status, $letter_grade);
+  $stmt->bind_param("iisssi", 
+    $student_id, $section_id, $date_enrolled, $status, $letter_grade, $is_deleted);
 
   $stmt->execute();
 
@@ -122,7 +130,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $enrollment_id = $_DELETE["enrollment_id"] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_enrollment WHERE enrollment_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_enrollment 
+                          SET is_deleted = 1
+                          WHERE enrollment_id = ?");
   $stmt->bind_param('i', $enrollment_id);
   $stmt->execute();
 
