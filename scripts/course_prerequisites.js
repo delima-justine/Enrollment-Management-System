@@ -233,5 +233,36 @@ function exportTableToPDF() {
   doc.save(`course_prerequisites[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(coursePrerequisiteEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((courses)=> {
+    coursePrerequisiteTable.innerHTML = "";
+
+    for(const course of courses) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${course.course_id}</td>
+        <td>${course.prereq_course_id}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editCoursePrerequisite(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteCoursePrerequisite(this)">
+            Delete
+          </button>
+        </td>
+      `
+      coursePrerequisiteTable.append(row);
+    }
+  });
+}
+
 // Display course prerequisites to the table.
 displayPrerequisiteCourses();
