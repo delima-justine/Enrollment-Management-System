@@ -51,7 +51,8 @@
           type="text" 
           id="building_input"
           class="form-control form-control-sm"
-          placeholder="Building">
+          placeholder="Building"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -60,7 +61,8 @@
           type="text" 
           id="room_code_input"
           class="form-control form-control-sm"
-          placeholder="Room Code">
+          placeholder="Room Code"
+          oninput="checkField()">
       </div>
 
       <div class="input-label col">
@@ -69,7 +71,8 @@
           type="number"
           id="capacity_input"
           class="form-control form-control-sm"
-          placeholder="Capacity">
+          placeholder="Capacity"
+          oninput="checkField()">
       </div>
     </div>
   </div>
@@ -87,8 +90,10 @@
       <div class="col-auto">
         <button  
           type="button"
+          id="add_room_btn"
           class="btn btn-outline-success btn-sm"
-          onclick="addRoom()">
+          onclick="addRoom()"
+          disabled>
             Add Room
         </button>
       </div>

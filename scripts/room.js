@@ -1,8 +1,24 @@
 const roomEndpoint = "http://localhost/Enrollment-Management-System/php/room.php"
+const buildingInput = document.querySelector('#building_input');
+const roomCodeInput = document.querySelector('#room_code_input');
+const capacityInput = document.querySelector('#capacity_input');
+const roomTable = document.querySelector("#table_body_room");
+const roomTableContainer = document.querySelector("#room_table");
+
+function checkField() {
+  const addRoomBtn = document.querySelector('#add_room_btn');
+
+  if(buildingInput.value.trim().length &&
+      roomCodeInput.value.trim().length &&
+      capacityInput.value.trim().length
+  ) {
+    addRoomBtn.disabled = false;
+  } else {
+    addRoomBtn.disabled = true;
+  }
+}
 
 function displayRooms() {
-  const roomTable = document.querySelector("#table_body_room");
-
   fetch(roomEndpoint)
   .then((response) => response.json())
   .then((rooms)=> {
@@ -35,10 +51,6 @@ function displayRooms() {
 
 // Add new department
 function addRoom() {
-  const buildingInput = document.querySelector('#building_input');
-  const roomCodeInput = document.querySelector('#room_code_input');
-  const capacityInput = document.querySelector('#capacity_input');
-
   fetch(roomEndpoint, {
     method: "POST",
     headers: {
