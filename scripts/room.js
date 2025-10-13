@@ -178,5 +178,75 @@ function searchRoom() {
   });
 }
 
-// Display instructors to the table.
+function ExportTableToXLSX(type) {
+  // Clone the original table
+  const clonedTable = roomTableContainer.cloneNode(true);
+
+  // Remove Edit and Delete columns from header
+  const headerRow = clonedTable.querySelector("thead tr");
+  headerRow.deleteCell(-1); // Delete last cell (Delete)
+  headerRow.deleteCell(-1); // Delete second last cell (Edit)
+
+  // Remove Edit and Delete cells from each row
+  const rows = clonedTable.querySelectorAll("tbody tr");
+  rows.forEach(row => {
+    row.deleteCell(-1); // Delete last cell (Delete)
+    row.deleteCell(-1); // Delete second last cell (Edit)
+  });
+
+  // Convert cleaned table to workbook
+  const file = XLSX.utils.table_to_book(clonedTable, { sheet: "Rooms" });
+  const dateToday = new Date().toISOString().split('T')[0];
+  const ws = file.Sheets["Rooms"];
+
+  // Auto column width
+  const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const colWidths = data[0].map((_, colIndex) => {
+    const maxLength = data.reduce((acc, row) => {
+      const cell = row[colIndex] ? row[colIndex].toString() : "";
+      return Math.max(acc, cell.length);
+    }, 10);
+    return { wch: maxLength + 2 };
+  });
+  ws['!cols'] = colWidths;
+
+  // Export file
+  XLSX.writeFile(file, `rooms[${dateToday}].` + type);
+}
+
+function exportTableToPDF() {
+  const doc = new jspdf.jsPDF({ orientation: "landscape"}); // Initialize jsPDF
+  const dateToday = new Date().toISOString().split('T')[0];
+  
+  // Define which columns to include
+  const columns = [
+    { header: "#", dataKey: "room_id" },
+    { header: "Building", dataKey: "building" },
+    { header: "Room Code", dataKey: "room_code" },
+    { header: "Capacity", dataKey: "capacity" },
+  ];
+
+  // Get data from your table or dynamically generate it
+  const tableData = [];
+  document.querySelectorAll("#room_table tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("td");
+    tableData.push({
+      room_id: cells[0].innerText,
+      building: cells[1].innerText,
+      room_code: cells[2].innerText,  
+      capacity: cells[3].innerText
+    });
+  });
+
+  // Generate the table with selected columns
+  doc.autoTable({
+    columns: columns,
+    body: tableData,
+  });
+
+  // Save the PDF
+  doc.save(`rooms[${dateToday}].pdf`);
+}
+
+// Display rooms to the table.
 displayRooms();
