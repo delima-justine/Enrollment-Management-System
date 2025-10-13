@@ -193,5 +193,83 @@ function searchStudentId() {
   });
 }
 
+function ExportTableToXLSX(type) {
+  // Clone the original table
+  const clonedTable = studTableContainer.cloneNode(true);
+
+  // Remove Edit and Delete columns from header
+  const headerRow = clonedTable.querySelector("thead tr");
+  headerRow.deleteCell(-1); // Delete last cell (Delete)
+  headerRow.deleteCell(-1); // Delete second last cell (Edit)
+
+  // Remove Edit and Delete cells from each row
+  const rows = clonedTable.querySelectorAll("tbody tr");
+  rows.forEach(row => {
+    row.deleteCell(-1); // Delete last cell (Delete)
+    row.deleteCell(-1); // Delete second last cell (Edit)
+  });
+
+  // Convert cleaned table to workbook
+  const file = XLSX.utils.table_to_book(clonedTable, { sheet: "Students" });
+  const dateToday = new Date().toISOString().split('T')[0];
+  const ws = file.Sheets["Students"];
+
+  // Auto column width
+  const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const colWidths = data[0].map((_, colIndex) => {
+    const maxLength = data.reduce((acc, row) => {
+      const cell = row[colIndex] ? row[colIndex].toString() : "";
+      return Math.max(acc, cell.length);
+    }, 10);
+    return { wch: maxLength + 2 };
+  });
+  ws['!cols'] = colWidths;
+
+  // Export file
+  XLSX.writeFile(file, `students[${dateToday}].` + type);
+}
+
+function exportTableToPDF() {
+  const doc = new jspdf.jsPDF({ orientation: "landscape"}); // Initialize jsPDF
+  const dateToday = new Date().toISOString().split('T')[0];
+  
+  // Define which columns to include
+  const columns = [
+    { header: "#", dataKey: "student_id" },
+    { header: "Student No.", dataKey: "student_no" },
+    { header: "Last Name", dataKey: "last_name" },
+    { header: "First Name", dataKey: "first_name" },
+    { header: "Email", dataKey: "email" },
+    { header: "Gender", dataKey: "gender" },
+    { header: "Year Level", dataKey: "year_level" },
+    { header: "Program ID", dataKey: "program_id" }
+  ];
+
+  // Get data from your table or dynamically generate it
+  const tableData = [];
+  document.querySelectorAll("#student_table tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("td");
+    tableData.push({
+      student_id: cells[0].innerText,
+      student_no: cells[1].innerText,  // corresponds to Course Code
+      last_name: cells[2].innerText,  // corresponds to Course Name
+      first_name: cells[3].innerText,
+      email: cells[4].innerText,
+      gender: cells[5].innerText,
+      year_level: cells[6].innerText,
+      program_id: cells[7].innerText
+    });
+  });
+
+  // Generate the table with selected columns
+  doc.autoTable({
+    columns: columns,
+    body: tableData,
+  });
+
+  // Save the PDF
+  doc.save(`students[${dateToday}].pdf`);
+}
+
 // Display students
 displayStudents();
