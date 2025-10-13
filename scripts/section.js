@@ -291,5 +291,44 @@ function exportTableToPDF() {
   doc.save(`sections[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(sectionEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((sections)=> {
+    sectionTable.innerHTML = "";
+
+    for(const section of sections) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${section.section_id}</td>
+        <td>${section.section_code}</td>
+        <td>${section.course_id}</td>
+        <td>${section.term_id}</td>
+        <td>${section.instructor_id}</td>
+        <td>${section.day_pattern}</td>
+        <td>${section.start_time}</td>
+        <td>${section.end_time}</td>
+        <td>${section.room_id}</td>
+        <td>${section.max_capacity}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editSection(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteSection(this)">
+            Delete
+          </button>
+        </td>
+      `
+      sectionTable.append(row);
+    }
+  });
+}
+
 // Display Sections
 displaySections();
