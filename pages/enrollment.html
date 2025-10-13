@@ -105,8 +105,9 @@
       <div class="col-auto">
         <input 
           type="text"
-          placeholder="Search Enrollment"
-          onInput
+          placeholder="Search Student ID"
+          onInput="searchEnrollment()"
+          id="search_input"
           class="form-control form-control-sm"/>
       </div>
 
@@ -122,7 +123,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="table-responsive-sm my-4 mx-4">
     <table class="table table-striped">
