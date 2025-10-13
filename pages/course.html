@@ -19,32 +19,16 @@
   <title>Courses</title>
 </head>
 <body>
-  <header class="container-fluid bg-dark mx-0 my-0 ">
+  <header class="container-fluid bg-dark mx-0 my-0 d-flex flex-row">
     <div class="row mx-0 my-0">
       <div class="col d-flex align-content-center">
-        <h1 class="text-white p-2">Courses</h1>
+        <h1 class="text-white pt-3">Courses</h1>
       </div>
 
-      <div id="tbl_dropdown_container" class="col d-flex justify-content-center mx-0 my-3">
-        <select 
-          name="tables" 
-          id="table_select" 
-          onChange="switchTables()"
-          class="form-select form-select-sm">
-
-          <option selected value="">-- Please Select a Table --</option>
-          <option value="course">Course ✅</option>
-          <option value="course-prerequisite">Course Prerequisite</option>
-          <option value="department">Department ✅</option>
-          <option value="enrollment">Enrollment ✅</option>
-          <option value="instructor">Instructor</option>
-          <option value="program">Program</option>
-          <option value="room">Room</option>
-          <option value="section">Section ✅</option>
-          <option value="student">Student ✅</option>
-          <option value="term">Term</option>
-
-        </select>
+      <div class="row mx-0 mb-2">
+        <div class="col p-0">
+          <a href="../index.html" class="text-decoration-none text-white">Back to Main Dashboard</a>
+        </div>
       </div>
     </div>
   </header>
