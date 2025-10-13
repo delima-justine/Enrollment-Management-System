@@ -24,18 +24,24 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_room
-     WHERE room_code LIKE ?
+     WHERE room_code LIKE ? AND is_deleted = 0
      ORDER BY room_id DESC 
     "); 
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
   } else if($sort === "ascending") {
-     $stmt = $conn->prepare("SELECT * FROM tbl_room ORDER BY room_id ASC");
+     $stmt = $conn->prepare("SELECT * FROM tbl_room 
+                            WHERE is_deleted = 0 
+                            ORDER BY room_id ASC");
   } else if($sort === "descending") {
-     $stmt = $conn->prepare("SELECT * FROM tbl_room ORDER BY room_id DESC"); 
+     $stmt = $conn->prepare("SELECT * FROM tbl_room 
+                            WHERE is_deleted = 0 
+                            ORDER BY room_id DESC"); 
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_room ORDER BY room_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_room 
+                            WHERE is_deleted = 0 
+                            ORDER BY room_id DESC");
   }
 
   
@@ -57,16 +63,18 @@ if($conn->connect_error) {
   $building = $_POST['building'];
   $room_code = $_POST['room_code'];
   $capacity = $_POST['capacity'];
+  $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO 
                         tbl_room(
                           building, 
                           room_code, 
-                          capacity
+                          capacity,
+                          is_deleted
                         )
-                        VALUES(?, ?, ?)");
+                        VALUES(?, ?, ?, ?)");
 
-  $stmt->bind_param("ssi", $building, $room_code, $capacity);
+  $stmt->bind_param("ssii", $building, $room_code, $capacity, $is_deleted);
 
   $stmt->execute();
 
@@ -111,7 +119,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $room_id = $_DELETE['room_id'] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_room WHERE room_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_room 
+                          SET is_deleted = 1
+                          WHERE room_id = ?");
   $stmt->bind_param('i', $room_id);
   $stmt->execute();
 
