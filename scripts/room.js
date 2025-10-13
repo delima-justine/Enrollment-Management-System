@@ -140,5 +140,43 @@ function deleteRoom(button) {
   })
 }
 
+function searchRoom() {
+  const searchInput = document.querySelector('#search_input');
+
+  fetch(roomEndpoint + `?search=${encodeURIComponent(searchInput.value)}`)
+  .then((response) => response.json())
+  .then((rooms)=> {
+    if(!rooms || rooms.length === 0) {
+      roomTable.innerHTML = "No Data Found.";
+      return;
+    }
+
+    roomTable.innerHTML = "";
+
+    for(const room of rooms) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${room.room_id}</td>
+        <td>${room.building}</td>
+        <td>${room.room_code}</td>
+        <td>${room.capacity}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editRoom(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteRoom(this)">
+            Delete
+          </button>
+        </td>
+      `
+      roomTable.append(row);
+    }
+  });
+}
+
 // Display instructors to the table.
 displayRooms();
