@@ -248,5 +248,38 @@ function exportTableToPDF() {
   doc.save(`rooms[${dateToday}].pdf`);
 }
 
+function sortTable() {
+  const sortDropdown = document.querySelector('#sort_drop_down');
+
+  fetch(roomEndpoint + `?sort=${encodeURIComponent(sortDropdown.value)}`)
+  .then((response) => response.json())
+  .then((rooms)=> {
+    roomTable.innerHTML = "";
+
+    for(const room of rooms) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${room.room_id}</td>
+        <td>${room.building}</td>
+        <td>${room.room_code}</td>
+        <td>${room.capacity}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editRoom(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteRoom(this)">
+            Delete
+          </button>
+        </td>
+      `
+      roomTable.append(row);
+    }
+  });
+}
+
 // Display rooms to the table.
 displayRooms();

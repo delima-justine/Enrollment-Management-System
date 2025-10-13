@@ -11,6 +11,7 @@ $dbname = "dbenrollment";
 
 // Connect to DB
 $conn = new mysqli($database, $username, $password, $dbname);
+$sort = isset($_GET['sort']) ? trim($_GET['sort']): '';
 
 // Check connection
 if($conn->connect_error) {
@@ -29,6 +30,10 @@ if($conn->connect_error) {
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
+  } else if($sort === "ascending") {
+     $stmt = $conn->prepare("SELECT * FROM tbl_room ORDER BY room_id ASC");
+  } else if($sort === "descending") {
+     $stmt = $conn->prepare("SELECT * FROM tbl_room ORDER BY room_id DESC"); 
   } else {
     $stmt = $conn->prepare("SELECT * FROM tbl_room ORDER BY room_id DESC");
   }
