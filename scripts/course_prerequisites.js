@@ -130,5 +130,41 @@ function deleteCoursePrerequisite(button) {
   })
 }
 
+function searchCourse() {
+  const searchInput = document.querySelector('#search_input');
+
+  fetch(coursePrerequisiteEndpoint + `?search=${encodeURIComponent(searchInput.value)}`)
+  .then((response) => response.json())
+  .then((courses)=> {
+    if(!courses || courses.length === 0) {
+      coursePrerequisiteTable.innerHTML = "No Data Found.";
+      return;
+    }
+    
+    coursePrerequisiteTable.innerHTML = "";
+
+    for(const course of courses) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${course.course_id}</td>
+        <td>${course.prereq_course_id}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editCoursePrerequisite(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteCoursePrerequisite(this)">
+            Delete
+          </button>
+        </td>
+      `
+      coursePrerequisiteTable.append(row);
+    }
+  });
+}
+
 // Display instructors to the table.
 displayPrerequisiteCourses();
