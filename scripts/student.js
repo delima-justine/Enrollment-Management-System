@@ -1,8 +1,31 @@
 const studentEndpoint = "http://localhost/Enrollment-Management-System/php/student.php"
+const studentNumInput = document.querySelector('#student_num_input');
+const lastNameInput = document.querySelector('#last_name_input');
+const firstNameInput = document.querySelector('#first_name_input'); 
+const emailInput = document.querySelector('#email_input');
+const genderInput = document.querySelector('#gender_input');
+const yearLevelInput = document.querySelector('#year_level_input');
+const programIdInput = document.querySelector('#program_id_input');
+const studTable = document.querySelector("#table_body_student");
+const studTableContainer = document.querySelector('#student_table');
+
+function checkField() {
+  const addStudentBtn = document.querySelector('#add_student_btn');
+
+  if(studentNumInput.value.trim().length &&
+      lastNameInput.value.trim().length &&
+      emailInput.value.trim().length &&
+      genderInput.value.trim().length &&
+      yearLevelInput.value.trim().length &&
+      programIdInput.value.trim().length
+  ) {
+    addStudentBtn.disabled = false;
+  } else {
+    addStudentBtn.disabled = true;
+  }
+}
 
 function displayStudents() {
-  const studTable = document.querySelector("#table_body_student");
-
   fetch(studentEndpoint)
   .then((response) => response.json())
   .then((students)=> {
@@ -38,14 +61,6 @@ function displayStudents() {
 }
 
 function addStudent() {
-  const studentNumInput = document.querySelector('#student_num_input');
-  const lastNameInput = document.querySelector('#last_name_input');
-  const firstNameInput = document.querySelector('#first_name_input'); 
-  const emailInput = document.querySelector('#email_input');
-  const genderInput = document.querySelector('#gender_input');
-  const yearLevelInput = document.querySelector('#year_level_input');
-  const programIdInput = document.querySelector('#program_id_input');
-
   fetch(studentEndpoint, {
     method: "POST",
     headers: {
