@@ -24,18 +24,24 @@ if($conn->connect_error) {
   if(!empty($search)) {
     $stmt = $conn->prepare("
      SELECT * FROM tbl_department
-     WHERE dept_name LIKE ?
+     WHERE dept_name LIKE ? AND is_deleted = 0
      ORDER BY dept_id DESC 
     "); 
 
     $search_param = "%$search%";
     $stmt->bind_param("s", $search_param);
   } else if($sort === "ascending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_department ORDER BY dept_id ASC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_department 
+                            WHERE is_deleted = 0 
+                            ORDER BY dept_id ASC");
   } else if($sort === "descending") {
-    $stmt = $conn->prepare("SELECT * FROM tbl_department ORDER BY dept_id DESC"); 
+    $stmt = $conn->prepare("SELECT * FROM tbl_department 
+                            WHERE is_deleted = 0 
+                            ORDER BY dept_id DESC"); 
   } else {
-    $stmt = $conn->prepare("SELECT * FROM tbl_department ORDER BY dept_id DESC");
+    $stmt = $conn->prepare("SELECT * FROM tbl_department 
+                            WHERE is_deleted = 0 
+                            ORDER BY dept_id DESC");
   }
 
   $stmt->execute();
@@ -55,10 +61,10 @@ if($conn->connect_error) {
   $dept_code = $_POST['dept_code'] ?? "";
   $dept_name = $_POST['dept_name'] ?? "";
 
-  $stmt = $conn->prepare("INSERT INTO tbl_department(dept_code, dept_name)
-                        VALUES(?, ?)");
+  $stmt = $conn->prepare("INSERT INTO tbl_department(dept_code, dept_name, is_deleted)
+                        VALUES(?, ?, ?)");
 
-  $stmt->bind_param("ss", $dept_code, $dept_name);
+  $stmt->bind_param("ssi", $dept_code, $dept_name, 0);
 
   $stmt->execute();
 
@@ -96,7 +102,9 @@ if($conn->connect_error) {
   parse_str(file_get_contents('php://input'), $_DELETE);
 
   $dept_id = $_DELETE["dept_id"] ?? "";
-  $stmt = $conn->prepare("DELETE FROM tbl_department WHERE dept_id = ?");
+  $stmt = $conn->prepare("UPDATE tbl_department 
+                          SET is_deleted = 1
+                          WHERE dept_id = ?");
   $stmt->bind_param('i', $dept_id);
   $stmt->execute();
 
