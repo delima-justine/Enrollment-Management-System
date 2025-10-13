@@ -140,5 +140,43 @@ function deleteProgram(button) {
   })
 }
 
+function searchProgram() {
+  const searchInput = document.querySelector('#search_input');
+
+  fetch(programEndpoint + `?search=${encodeURIComponent(searchInput.value)}`)
+  .then((response) => response.json())
+  .then((programs)=> {
+    if(!programs || programs.length === 0) {
+      programTable.innerHTML = "No Data Found.";
+      return;
+    }
+
+    programTable.innerHTML = "";
+
+    for(const program of programs) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${program.program_id}</td>
+        <td>${program.program_code}</td>
+        <td>${program.program_name}</td>
+        <td>${program.dept_id}</td>
+        <td><button 
+          type="button"
+          class="btn btn-warning"
+          onclick="editProgram(this)">Edit</button></td>
+       <td>
+          <button 
+          type="button"
+          class="btn btn-danger"
+          onClick="deleteProgram(this)">
+            Delete
+          </button>
+        </td>
+      `
+      programTable.append(row);
+    }
+  });
+}
+
 // Display instructors to the table.
 displayPrograms();
