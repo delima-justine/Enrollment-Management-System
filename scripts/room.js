@@ -62,7 +62,7 @@ function addRoom() {
   })
   .then((response) => response.text())
   .then(responseText => {
-    alert(responseText);
+    Swal.fire("Success", `${responseText}`, "success");
     displayRooms(); // updates the table
   }).catch (error => {
     alert('console error.');
@@ -107,7 +107,7 @@ function editRoom(button) {
     })
     .then((response) => response.text())
     .then((responseText) => {
-      alert(responseText);
+      Swal.fire("Success", `${responseText}`, "success");
       displayRooms();
     });
 
@@ -116,6 +116,28 @@ function editRoom(button) {
     // Edit mode
     button.textContent = "Save";
     cells[0].focus();
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      icon: "info",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      customClass: {
+        popup: 'colored-toast'
+      },
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
+
+    Toast.fire({
+      icon: 'info',
+      title: 'Edit Mode Activated'
+    });
+
     updatedRow.length = 0; // clear the array.
   }
 }
@@ -125,19 +147,28 @@ function deleteRoom(button) {
   const row = button.closest('tr');
   const cells = row.querySelectorAll('td');
   const roomId = cells[0].innerHTML;
-  
-  fetch(roomEndpoint, {
-    method: 'DELETE',
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded",
-    },
-    body: `room_id=${roomId}`,
-  })
-  .then((response) => response.text())
-  .then((responseText) => {
-    alert(responseText);
-    displayRooms();
-  })
+
+  Swal.fire({
+    title: "Do you want to delete this data?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(roomEndpoint, {
+        method: 'DELETE',
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded",
+        },
+        body: `room_id=${roomId}`,
+      })
+      .then((response) => response.text())
+      .then(() => {
+        Swal.fire("Deleted", "", "success");
+        displayRooms();
+      })
+    }
+  });
 }
 
 function searchRoom() {
