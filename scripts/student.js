@@ -28,6 +28,15 @@ function checkField() {
   }
 }
 
+function resetFields() {
+  const myForm = document.querySelector('#form_container');
+  const inputFields = myForm.querySelectorAll('input');
+
+  inputFields.forEach(field => {
+    field.value = '';
+  })
+}
+
 function displayStudents() {
   fetch(studentEndpoint)
   .then((response) => response.json())
@@ -80,6 +89,7 @@ function addStudent() {
   .then((response) => response.text())
   .then(responseText => {
     Swal.fire("Success", `${responseText}`, "success");
+    resetFields(); // clear fields
     displayStudents(); // updates the table
   }).catch (error => {
     alert('console error.');
