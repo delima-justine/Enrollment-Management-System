@@ -2,10 +2,12 @@ const studentEndpoint = "http://localhost/Enrollment-Management-System/php/stude
 const studentNumInput = document.querySelector('#student_num_input');
 const lastNameInput = document.querySelector('#last_name_input');
 const firstNameInput = document.querySelector('#first_name_input'); 
+const middleNameInput = document.querySelector('#middle_name_input');
 const emailInput = document.querySelector('#email_input');
 const genderInput = document.querySelector('#gender_input');
 const yearLevelInput = document.querySelector('#year_level_input');
 const programIdInput = document.querySelector('#program_id_input');
+const birthdateInput = document.querySelector('#birthdate_input');
 const studTable = document.querySelector("#table_body_student");
 const studTableContainer = document.querySelector('#student_table');
 
@@ -17,7 +19,9 @@ function checkField() {
       emailInput.value.trim().length &&
       genderInput.value.trim().length &&
       yearLevelInput.value.trim().length &&
-      programIdInput.value.trim().length
+      programIdInput.value.trim().length &&
+      middleNameInput.value.trim().length &&
+      birthdateInput.value.trim().length
   ) {
     addStudentBtn.disabled = false;
   } else {
@@ -71,7 +75,8 @@ function addStudent() {
     body: `student_no=${studentNumInput.value}&` +
           `last_name=${lastNameInput.value}&first_name=${firstNameInput.value}&` +
           `email=${emailInput.value}&gender=${genderInput.value}&` +
-          `year_level=${yearLevelInput.value}&program_id=${programIdInput.value}`
+          `year_level=${yearLevelInput.value}&program_id=${programIdInput.value}&` +
+          `middle_name=${middleNameInput.value}&birthdate=${birthdateInput.value}`
   })
   .then((response) => response.text())
   .then(responseText => {
@@ -100,10 +105,12 @@ function editStudent(button) {
       student_no: cells[1].innerHTML,
       last_name: cells[2].innerHTML,
       first_name: cells[3].innerHTML,
-      email: cells[4].innerHTML,
-      gender: cells[5].innerHTML,
-      year_level: cells[6].innerHTML,
-      program_id: cells[7].innerHTML,
+      middle_name: cells[4].innerHTML,
+      email: cells[5].innerHTML,
+      birthdate: cells[6].innerHTML,
+      gender: cells[7].innerHTML,
+      year_level: cells[8].innerHTML,
+      program_id: cells[9].innerHTML,
   });
 
   console.log(updatedRow); // prints the updated array.
@@ -120,7 +127,8 @@ function editStudent(button) {
       body: `student_id=${updatedRow[0].student_id}&student_no=${updatedRow[0].student_no}&` +
           `last_name=${updatedRow[0].last_name}&first_name=${updatedRow[0].first_name}&` +
           `email=${updatedRow[0].email}&gender=${updatedRow[0].gender}&` +
-          `year_level=${updatedRow[0].year_level}&program_id=${updatedRow[0].program_id}`
+          `year_level=${updatedRow[0].year_level}&program_id=${updatedRow[0].program_id}&` +
+          `middle_name=${updatedRow[0].middle_name}&birthdate=${updatedRow[0].birthdate}`
     })
     .then((response) => response.text())
     .then((responseText) => {
@@ -208,7 +216,9 @@ function searchStudentId() {
         <td>${student.student_no}</td>
         <td>${student.last_name}</td>
         <td>${student.first_name}</td>
+        <td>${student.middle_name}</td>
         <td>${student.email}</td>
+        <td>${student.birthdate}</td>
         <td>${student.gender}</td>
         <td>${student.year_level}</td>
         <td>${student.program_id}</td>
@@ -276,7 +286,9 @@ function exportTableToPDF() {
     { header: "Student No.", dataKey: "student_no" },
     { header: "Last Name", dataKey: "last_name" },
     { header: "First Name", dataKey: "first_name" },
+    { header: "Middle Name", dataKey: "middle_name"},
     { header: "Email", dataKey: "email" },
+    { header: "Birthdate", dataKey: "birthdate" },
     { header: "Gender", dataKey: "gender" },
     { header: "Year Level", dataKey: "year_level" },
     { header: "Program ID", dataKey: "program_id" }
@@ -291,6 +303,7 @@ function exportTableToPDF() {
       student_no: cells[1].innerText,  // corresponds to Course Code
       last_name: cells[2].innerText,  // corresponds to Course Name
       first_name: cells[3].innerText,
+
       email: cells[4].innerText,
       gender: cells[5].innerText,
       year_level: cells[6].innerText,
@@ -323,7 +336,9 @@ function sortTable() {
         <td>${student.student_no}</td>
         <td>${student.last_name}</td>
         <td>${student.first_name}</td>
+        <td>${student.middle_name}</td>
         <td>${student.email}</td>
+        <td>${student.birthdate}</td>
         <td>${student.gender}</td>
         <td>${student.year_level}</td>
         <td>${student.program_id}</td>

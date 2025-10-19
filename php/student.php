@@ -68,20 +68,31 @@ if($conn->connect_error) {
   $student_no = $_POST['student_no'];
   $last_name = $_POST['last_name'];
   $first_name = $_POST['first_name'];
+  $middle_name = $_POST['middle_name'];
   $email = $_POST['email'];
   $gender = $_POST['gender'];
   $year_level = $_POST['year_level'];
   $program_id = $_POST['program_id'];
+  $birthdate = $_POST['birthdate'];
   $is_deleted = 0;
 
   $stmt = $conn->prepare("INSERT INTO 
-                        tbl_student(student_no, last_name, first_name, email, gender,
-                        year_level, program_id, is_deleted)
-                        VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+                        tbl_student(
+                          student_no, 
+                          last_name, 
+                          first_name, 
+                          middle_name,
+                          email, 
+                          birthdate, 
+                          gender, 
+                          year_level, 
+                          program_id, 
+                          is_deleted)
+                        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-  $stmt->bind_param("sssssiii", 
-    $student_no, $last_name, $first_name, $email, $gender, $year_level,
-      $program_id, $is_deleted);
+  $stmt->bind_param("sssssssiii", 
+    $student_no, $last_name, $first_name, $middle_name, $email, $birthdate,
+      $gender, $year_level, $program_id, $is_deleted);
 
   $stmt->execute();
 
@@ -98,28 +109,34 @@ if($conn->connect_error) {
   $new_student_no = $_PATCH['student_no'] ?? "";
   $new_last_name = $_PATCH['last_name'] ?? "";
   $new_first_name = $_PATCH['first_name'] ?? "";
+  $new_middle_name = $_PATCH['middle_name'] ?? "";
   $new_email = $_PATCH['email'] ?? "";
   $new_gender = $_PATCH['gender'] ?? "";
   $new_year_level = $_PATCH['year_level'] ?? "";
   $new_program_id = $_PATCH['program_id'] ?? "";
+  $new_birthdate = $_PATCH['birthdate'] ?? ""; 
 
   $stmt = $conn->prepare("
           UPDATE tbl_student
           SET student_no = ?,
           last_name = ?,
           first_name = ?,
+          middle_name = ?,
           email = ?,
+          birthdate = ?,
           gender = ?,
           year_level = ?,
           program_id = ?
           WHERE student_id = ?;
   ");
 
-  $stmt->bind_param("sssssiii", 
+  $stmt->bind_param("sssssssiii", 
     $new_student_no, 
     $new_last_name, 
     $new_first_name, 
+    $new_middle_name,
     $new_email, 
+    $new_birthdate,
     $new_gender, 
     $new_year_level,
     $new_program_id,
