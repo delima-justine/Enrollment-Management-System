@@ -2,6 +2,7 @@ const sectionEndpoint = "http://localhost/Enrollment-Management-System/php/secti
 const courseEndpoint = "http://localhost/Enrollment-Management-System/php/course.php";
 const termEndpoint = "http://localhost/Enrollment-Management-System/php/term.php"
 const instructorEndpoint = "http://localhost/Enrollment-Management-System/php/instructor.php";
+const roomEndpoint = "http://localhost/Enrollment-Management-System/php/room.php"
 const sectionCodeInput = document.querySelector('#section_code_input');
 const courseIdInput = document.querySelector('#course_id_input');
 const termIdInput= document.querySelector('#term_id_input'); 
@@ -406,6 +407,24 @@ function displayInstructors() {
     }
   });
 }
+
+function displayRooms() {
+  fetch(roomEndpoint + `?sort=ascending`) 
+  .then((response) => response.json())
+  .then((rooms) => {
+    for(const room of rooms) {
+      const option = document.createElement('option');
+      const fullname = `${room.building} - ${room.room_code}`;
+      option.value = room.room_id;
+      option.innerHTML = fullname;
+
+      roomIdInput.append(option);
+    }
+  });
+}
+
+// Display rooms
+displayRooms();
 
 // Display instructors
 displayInstructors();

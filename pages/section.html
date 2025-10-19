@@ -119,12 +119,13 @@
 
       <div class="input-label col">
         <label>Room ID</label>
-        <input 
-          type="number" 
+        <select 
           id="room_id_input"
-          class="form-control form-control-sm"
+          class="form-select form-select-sm"
           placeholder="Room ID"
-          oninput="checkField()">
+          onchange="checkField()">
+            <option value="" disabled selected>-- Select Department --</option>
+        </select>
       </div>
 
       <div class="input-label col">
