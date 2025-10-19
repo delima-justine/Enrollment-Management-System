@@ -20,7 +20,6 @@ function checkField() {
       genderInput.value.trim().length &&
       yearLevelInput.value.trim().length &&
       programIdInput.value.trim().length &&
-      middleNameInput.value.trim().length &&
       birthdateInput.value.trim().length
   ) {
     addStudentBtn.disabled = false;
@@ -300,14 +299,15 @@ function exportTableToPDF() {
     const cells = row.querySelectorAll("td");
     tableData.push({
       student_id: cells[0].innerText,
-      student_no: cells[1].innerText,  // corresponds to Course Code
-      last_name: cells[2].innerText,  // corresponds to Course Name
+      student_no: cells[1].innerText,  
+      last_name: cells[2].innerText, 
       first_name: cells[3].innerText,
-
-      email: cells[4].innerText,
-      gender: cells[5].innerText,
-      year_level: cells[6].innerText,
-      program_id: cells[7].innerText
+      middle_name: cells[4].innerText,
+      email: cells[5].innerText,
+      birthdate: cells[6].innerText,
+      gender: cells[7].innerText,
+      year_level: cells[8].innerText,
+      program_id: cells[9].innerText
     });
   });
 
