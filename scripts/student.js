@@ -1,4 +1,5 @@
-const studentEndpoint = "http://localhost/Enrollment-Management-System/php/student.php"
+const studentEndpoint = "http://localhost/Enrollment-Management-System/php/student.php";
+const programEndpoint = "http://localhost/Enrollment-Management-System/php/program.php";
 const studentNumInput = document.querySelector('#student_num_input');
 const lastNameInput = document.querySelector('#last_name_input');
 const firstNameInput = document.querySelector('#first_name_input'); 
@@ -369,6 +370,23 @@ function sortTable() {
     }
   });
 }
+
+function displayPrograms() {
+  fetch(programEndpoint + `?sort=ascending`) 
+  .then((response) => response.json())
+  .then((programs) => {
+    for(const program of programs) {
+      const option = document.createElement('option');
+      option.value = program.program_id;
+      option.innerHTML = program.program_name;
+
+      programIdInput.append(option);
+    }
+  });
+}
+
+// Display programs
+displayPrograms();
 
 // Display students
 displayStudents();

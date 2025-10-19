@@ -129,12 +129,13 @@
 
       <div class="input-label col">
         <label>Program ID</label>
-        <input 
-          type="number" 
+        <select 
           id="program_id_input"
-          class="form-control form-control-sm"
+          class="form-select form-select-sm"
           placeholder="Program ID"
-          oninput="checkField()">
+          onchange="checkField()">
+            <option value="" disabled selected>-- Select Program --</option>
+        </select>
       </div>
     </div>
   </div>
