@@ -52,12 +52,13 @@
 
       <div class="input-label col">
         <label>Course ID</label>
-        <input 
-          type="number" 
+        <select
           id="course_id_input"
           class="form-control form-control-sm"
           placeholder="Course ID"
-          oninput="checkField()">
+          onchange="checkField()">
+            <option value="" disabled selected>-- Select Course --</option>
+        </select>
       </div>
 
       <div class="input-label col">

@@ -1,4 +1,5 @@
 const sectionEndpoint = "http://localhost/Enrollment-Management-System/php/section.php";
+const courseEndpoint = "http://localhost/Enrollment-Management-System/php/course.php";
 const sectionCodeInput = document.querySelector('#section_code_input');
 const courseIdInput = document.querySelector('#course_id_input');
 const termIdInput= document.querySelector('#term_id_input'); 
@@ -360,6 +361,23 @@ function sortTable() {
     }
   });
 }
+
+function displayCourses() {
+  fetch(courseEndpoint) 
+  .then((response) => response.json())
+  .then((courses) => {
+    for(const course of courses) {
+      const option = document.createElement('option');
+      option.value = course.course_id;
+      option.innerHTML = course.course_title;
+
+      courseIdInput.append(option);
+    }
+  });
+}
+
+// Display courses in dropdown
+displayCourses();
 
 // Display Sections
 displaySections();
