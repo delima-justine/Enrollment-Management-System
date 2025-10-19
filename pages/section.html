@@ -54,7 +54,7 @@
         <label>Course ID</label>
         <select
           id="course_id_input"
-          class="form-control form-control-sm"
+          class="form-select form-select-sm"
           placeholder="Course ID"
           onchange="checkField()">
             <option value="" disabled selected>-- Select Course --</option>
@@ -63,24 +63,26 @@
 
       <div class="input-label col">
         <label>Term ID</label>
-        <input 
-          type="number" 
+        <select
           id="term_id_input"
-          class="form-control form-control-sm"
+          class="form-select form-select-sm"
           placeholder="Term ID"
-          oninput="checkField()">
+          onchange="checkField()">
+            <option value="" disabled selected>-- Select Term --</option>
+        </select>
       </div>
     </div>
 
     <div class="container-sm row">
       <div class="input-label col">
         <label>Instructor ID</label>
-        <input 
-          type="number" 
+        <select
           id="instructor_id_input"
-          class="form-control form-control-sm"
+          class="form-select form-select-sm"
           placeholder="Instructor ID"
-          oninput="checkField()">
+          onchange="checkField()">
+            <option value="" disabled selected>-- Select Term --</option>
+        </select>
       </div>
 
       <div class="input-label col">

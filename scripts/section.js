@@ -1,5 +1,6 @@
 const sectionEndpoint = "http://localhost/Enrollment-Management-System/php/section.php";
 const courseEndpoint = "http://localhost/Enrollment-Management-System/php/course.php";
+const termEndpoint = "http://localhost/Enrollment-Management-System/php/term.php"
 const sectionCodeInput = document.querySelector('#section_code_input');
 const courseIdInput = document.querySelector('#course_id_input');
 const termIdInput= document.querySelector('#term_id_input'); 
@@ -375,6 +376,23 @@ function displayCourses() {
     }
   });
 }
+
+function displayTerms() {
+  fetch(termEndpoint + `?sort=ascending`) 
+  .then((response) => response.json())
+  .then((terms) => {
+    for(const term of terms) {
+      const option = document.createElement('option');
+      option.value = term.term_id;
+      option.innerHTML = term.term_code;
+
+      termIdInput.append(option);
+    }
+  });
+}
+
+//Display terms
+displayTerms();
 
 // Display courses in dropdown
 displayCourses();
