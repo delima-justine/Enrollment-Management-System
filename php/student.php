@@ -53,7 +53,9 @@ if($conn->connect_error) {
       'student_no'=>$row["student_no"],
       'last_name'=>$row["last_name"],
       'first_name'=>$row["first_name"],
+      'middle_name'=>$row["middle_name"],
       'email'=>$row["email"],
+      'birthdate'=>$row["birthdate"],
       'gender'=>$row["gender"],
       'year_level'=>$row['year_level'],
       'program_id'=>$row['program_id']

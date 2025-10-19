@@ -38,7 +38,9 @@ function displayStudents() {
         <td>${student.student_no}</td>
         <td>${student.last_name}</td>
         <td>${student.first_name}</td>
+        <td>${student.middle_name}</td>
         <td>${student.email}</td>
+        <td>${student.birthdate}</td>
         <td>${student.gender}</td>
         <td>${student.year_level}</td>
         <td>${student.program_id}</td>
