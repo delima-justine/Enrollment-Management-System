@@ -40,22 +40,22 @@
     <div class="row">
       <div class="input-label col">
         <label>Course ID</label>
-        <input 
-          type="number" 
+        <select 
           id="course_id_input"
-          class="form-control form-control-sm"
-          placeholder="Course ID"
-          oninput="checkField()">
+          class="form-select form-select-sm"
+          onchange="checkField()">
+            <option value="" disabled selected>-- Select Course --</option>
+        </select>
       </div>
 
       <div class="input-label col">
         <label>Prerequisite Course ID</label>
-        <input 
-          type="number" 
+        <select 
           id="prerequisite_course_id_input"
-          class="form-control form-control-sm"
-          placeholder="Prerequisite Course ID"
-          oninput="checkField()">
+          class="form-select form-select-sm"
+          onchange="checkField()">
+            <option value="" disabled selected>-- Select Course --</option>
+        </select>
       </div>  
     </div>
   </div>

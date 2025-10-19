@@ -1,4 +1,5 @@
 const coursePrerequisiteEndpoint = "http://localhost/Enrollment-Management-System/php/course_prerequisite.php"
+const courseEndpoint = "http://localhost/Enrollment-Management-System/php/course.php";
 const courseIdInput = document.querySelector('#course_id_input');
 const prereqCourseInput = document.querySelector('#prerequisite_course_id_input');
 const coursePrerequisiteTable = document.querySelector("#table_body_course_prereq");
@@ -294,6 +295,40 @@ function sortTable() {
     }
   });
 }
+
+function displayCourses() {
+  fetch(courseEndpoint) 
+  .then((response) => response.json())
+  .then((courses) => {
+    for(const course of courses) {
+      const option = document.createElement('option');
+      option.value = course.course_id;
+      option.innerHTML = course.course_title;
+
+      courseIdInput.append(option);
+    }
+  });
+}
+
+function displayPrerequisites() {
+  fetch(courseEndpoint) 
+  .then((response) => response.json())
+  .then((courses) => {
+    for(const course of courses) {
+      const option = document.createElement('option');
+      option.value = course.course_id;
+      option.innerHTML = course.course_title;
+
+      prereqCourseInput.append(option);
+    }
+  });
+}
+
+// Display courses for pre-requisistes dropdown
+displayPrerequisites();
+
+// Display courses
+displayCourses();
 
 // Display course prerequisites to the table.
 displayPrerequisiteCourses();
