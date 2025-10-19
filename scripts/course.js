@@ -1,4 +1,5 @@
 const courseEndpoint = "http://localhost/Enrollment-Management-System/php/course.php";
+const departmentEndpoint = "http://localhost/Enrollment-Management-System/php/department.php"
 const courseCodeInput = document.querySelector('#course_code_input');
 const courseTitleInput = document.querySelector('#course_title_input');
 const unitsInput = document.querySelector('#units_input');
@@ -358,6 +359,25 @@ function sortTable() {
     }
   });
 }
+
+function displayDepartments() {
+  const departmentDropdown = document.querySelector('#dept_id_input');
+
+  fetch(departmentEndpoint) 
+  .then((response) => response.json())
+  .then((departments) => {
+    for(const department of departments) {
+      const option = document.createElement('option');
+      option.value = department.dept_id;
+      option.innerHTML = department.dept_name;
+
+      departmentDropdown.append(option);
+    }
+  });
+}
+
+// appends department to the dropdown
+displayDepartments()
 
 // Display courses inside the table
 displayCourses();
