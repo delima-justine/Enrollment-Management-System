@@ -1,5 +1,5 @@
 const courseEndpoint = "http://localhost/Enrollment-Management-System/php/course.php";
-const departmentEndpoint = "http://localhost/Enrollment-Management-System/php/department.php"
+const departmentEndpoint = "http://localhost/Enrollment-Management-System/php/department.php";
 const courseCodeInput = document.querySelector('#course_code_input');
 const courseTitleInput = document.querySelector('#course_title_input');
 const unitsInput = document.querySelector('#units_input');
