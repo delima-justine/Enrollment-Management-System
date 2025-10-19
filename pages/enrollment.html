@@ -41,22 +41,23 @@
     <div class="container-sm row">
       <div class="input-label col">
         <label>Student ID</label>
-        <input 
-          type="number" 
-          class="form-control form-control-sm"
+        <select 
           id="student_id_input"
-          placeholder="Student ID"
+          class="form-select form-select-sm"
           oninput="checkField()">
+            <option value="" disabled selected>-- Select Student --</option>
+        </select>
       </div>
 
       <div class="input-label col">
         <label>Section ID</label>
-        <input 
-          type="number" 
-          class="form-control form-control-sm"
+        <select
           id="section_id_input"
           placeholder="Section ID"
-          oninput="checkField()">
+          oninput="checkField()"
+          class="form-select form-select-sm">
+            <option value="" disabled selected>-- Select Section --</option>
+        </select>
       </div>
 
       <div class="input-label col">

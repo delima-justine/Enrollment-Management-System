@@ -1,4 +1,6 @@
 const enrollmentEndpoint = "http://localhost/Enrollment-Management-System/php/enrollment.php"
+const studentEndpoint = "http://localhost/Enrollment-Management-System/php/student.php"
+const sectionEndpoint = "http://localhost/Enrollment-Management-System/php/section.php";
 const studentIdInput = document.querySelector('#student_id_input');
 const sectionIdInput = document.querySelector('#section_id_input');
 const dateEnrolledInput = document.querySelector('#date_enrolled_input');
@@ -329,6 +331,41 @@ function sortTable() {
     }
   });
 }
+
+function displayStudents() {
+  fetch(studentEndpoint + `?sort=ascending`) 
+  .then((response) => response.json())
+  .then((students) => {
+    for(const student of students) {
+      const option = document.createElement('option');
+      const fullname = `${student.last_name}, ${student.first_name} ${student.middle_name}`;
+      option.value = student.student_id;
+      option.innerHTML = `${fullname}`;
+
+      studentIdInput.append(option);
+    }
+  });
+}
+
+function displaySections() {
+  fetch(sectionEndpoint + `?sort=ascending`) 
+  .then((response) => response.json())
+  .then((sections) => {
+    for(const section of sections) {
+      const option = document.createElement('option');
+      option.value = section.section_id;
+      option.innerHTML = section.section_code;
+
+      sectionIdInput.append(option);
+    }
+  });
+}
+
+// Display sections in the dropdown.
+displaySections();
+
+// Display students in the dropdown.
+displayStudents();
 
 // Display Enrollments to the table.
 displayEnrollments();
