@@ -377,7 +377,7 @@ function displayDepartments() {
 }
 
 // appends department to the dropdown
-displayDepartments()
+displayDepartments();
 
 // Display courses inside the table
 displayCourses();
