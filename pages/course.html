@@ -33,76 +33,6 @@
     </div>
   </header>
 
-  <div class="container-sm mx-5 my-4 bg-secondary bg-opacity-25 p-4">
-    <div class="container-sm row">
-      <div class="row">
-        <h3>Add new course</h3>
-      </div>
-
-      <div class="input-label col">
-        <label>Course Code</label>
-        <input 
-          type="text" 
-          class="form-control form-control-sm"
-          id="course_code_input"
-          oninput="checkField()"
-          placeholder="Course Code">
-      </div>
-
-      <div class="input-label col">
-        <label>Course Title</label>
-        <input 
-          type="text" 
-          class="form-control form-control-sm"
-          id="course_title_input"
-          oninput="checkField()"
-          placeholder="Course Title">
-      </div>
-
-      <div class="input-label col">
-        <label>Units</label>
-        <input 
-          type="number"
-          class="form-control form-control-sm"
-          id="units_input"
-          oninput="checkField()"
-          placeholder="Units">
-      </div>
-    </div>
-
-    <div class="container-sm row">
-      <div class="input-label col">
-        <label>Lecture Hours</label>
-        <input 
-          type="number" 
-          class="form-control form-control-sm"
-          id="lecture_hrs_input"
-          oninput="checkField()"
-          placeholder="Lecture Hours">
-      </div>
-
-      <div class="input-label col">
-        <label>Lab Hours</label>
-        <input 
-          type="number" 
-          class="form-control form-control-sm"
-          id="lab_hrs_input"
-          oninput="checkField()"
-          placeholder="Lab Hours">
-      </div>
-
-      <div class="input-label col">
-        <label>Department ID</label>
-        <select 
-          id="dept_id_input"
-          class="form-select form-select-sm"
-          onchange="checkField()">
-            <option value="" disabled selected>-- Select Department --</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
   <div class="container mt-4 d-flex gap-5">
     <div class="row">
       <div class="col-auto">
@@ -119,8 +49,8 @@
           type="button"
           id="add_course_btn"
           class="btn btn-outline-success btn-sm"
-          onclick="addCourse()"
-          disabled>
+          data-bs-toggle="modal" 
+          data-bs-target="#add_course_modal">
             Add Course
         </button>
       </div>
@@ -187,7 +117,188 @@
     </table>
   </div>
 
+  <!-- Add New Course Modal -->
+  <div 
+      class="modal fade" 
+      data-bs-backdrop="static" 
+      data-bs-keyboard="false" 
+      tabindex="-1" 
+      id="add_course_modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Course</h5>
+          <button 
+            type="button" 
+            class="btn-close" 
+            data-bs-dismiss="modal" 
+            aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <label>Course Code</label>
+          <input 
+            type="text" 
+            class="form-control form-control-sm"
+            id="course_code_input"
+            oninput="checkField()"
+            placeholder="Course Code">
+
+          <label>Course Title</label>
+          <input 
+            type="text" 
+            class="form-control form-control-sm"
+            id="course_title_input"
+            oninput="checkField()"
+            placeholder="Course Title">
+            
+          <label>Units</label>
+          <input 
+            type="number"
+            class="form-control form-control-sm"
+            id="units_input"
+            oninput="checkField()"
+            placeholder="Units"
+            min="0">
+
+          <label>Lecture Hours</label>
+          <input 
+            type="number" 
+            class="form-control form-control-sm"
+            id="lecture_hrs_input"
+            oninput="checkField()"
+            placeholder="Lecture Hours"
+            min="0">
+
+          <label>Lab Hours</label>
+          <input 
+            type="number" 
+            class="form-control form-control-sm"
+            id="lab_hrs_input"
+            oninput="checkField()"
+            placeholder="Lab Hours"
+            min="0">
+
+          <label>Department ID</label>
+          <select 
+            id="dept_id_input"
+            class="form-select form-select-sm"
+            onchange="checkField()">
+              <option value="" disabled selected>-- Select Department --</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button 
+            type="button" 
+            class="btn btn-secondary" 
+            data-bs-dismiss="modal">
+              Close
+          </button>
+
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            data-bs-dismiss="modal"
+            onclick="addCourse()">
+              Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Course Modal -->
+  <div 
+      class="modal fade" 
+      data-bs-backdrop="static" 
+      data-bs-keyboard="false" 
+      tabindex="-1" 
+      id="update_course_modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Update Course</h5>
+          <button 
+            type="button" 
+            class="btn-close" 
+            data-bs-dismiss="modal" 
+            aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <label>Course Code</label>
+          <input 
+            type="text" 
+            class="form-control form-control-sm"
+            id="new_course_code_input"
+            oninput="checkField()"
+            placeholder="Course Code">
+
+          <label>Course Title</label>
+          <input 
+            type="text" 
+            class="form-control form-control-sm"
+            id="new_course_title_input"
+            oninput="checkField()"
+            placeholder="Course Title">
+            
+          <label>Units</label>
+          <input 
+            type="number"
+            class="form-control form-control-sm"
+            id="new_units_input"
+            oninput="checkField()"
+            placeholder="Units"
+            min="0">
+
+          <label>Lecture Hours</label>
+          <input 
+            type="number" 
+            class="form-control form-control-sm"
+            id="new_lecture_hrs_input"
+            oninput="checkField()"
+            placeholder="Lecture Hours"
+            min="0">
+
+          <label>Lab Hours</label>
+          <input 
+            type="number" 
+            class="form-control form-control-sm"
+            id="new_lab_hrs_input"
+            oninput="checkField()"
+            placeholder="Lab Hours"
+            min="0">
+
+          <label>Department ID</label>
+          <select 
+            id="new_dept_id_input"
+            class="form-select form-select-sm"
+            onchange="checkField()">
+              <option value="" disabled selected>-- Select Department --</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button 
+            type="button" 
+            class="btn btn-secondary" 
+            data-bs-dismiss="modal">
+              Close
+          </button>
+
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            data-bs-dismiss="modal"
+            onclick="updateCourse()">
+              Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="../scripts/course.js"></script>
-</script>
 </body>
 </html>

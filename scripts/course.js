@@ -41,11 +41,17 @@ function displayCourses() {
         <td>${course.lecture_hours}</td>
         <td>${course.lab_hours}</td>
         <td>${course.dept_id}</td>
-        <td><button 
+        <td>
+          <button 
           type="button"
           class="btn btn-warning"
-          onclick="editCourse(this)">Edit</button></td>
-       <td>
+          data-bs-toggle="modal"
+          data-bs-target="#update_course_modal"
+          onclick="editCourse(this)">
+            Edit
+          </button>
+        </td>
+        <td>
           <button 
           type="button"
           class="btn btn-danger"
@@ -83,79 +89,56 @@ function addCourse() {
 
 // Edit Course
 function editCourse(button) {
+  // populate update modal inputs with values from the selected row
   const row = button.closest('tr');
   const cells = row.querySelectorAll('td');
-  const isEditable = cells[0].contentEditable === "true";
-  const updatedRow = [];
+  const courseId = cells[0].innerText;
 
-  cells.forEach(cell => {
-    // toggles editable cell.
-    cell.contentEditable = isEditable ? 'false' : 'true';
-  });
+  document.querySelector('#new_course_code_input').value = cells[1].innerText;
+  document.querySelector('#new_course_title_input').value = cells[2].innerText;
+  document.querySelector('#new_units_input').value = cells[3].innerText;
+  document.querySelector('#new_lecture_hrs_input').value = cells[4].innerText;
+  document.querySelector('#new_lab_hrs_input').value = cells[5].innerText;
+  document.querySelector('#new_dept_id_input').value = cells[6].innerText;
 
-  // appends the array.
-  updatedRow.push({
-      course_id: cells[0].innerHTML, 
-      course_code: cells[1].innerHTML,
-      course_title: cells[2].innerHTML,
-      units: cells[3].innerHTML,
-      lecture_hours: cells[4].innerHTML,
-      lab_hours: cells[5].innerHTML,
-      dept_id: cells[6].innerHTML
-  });
+  // store course id on the modal's Update button
+  const updateBtn = document.querySelector('#update_course_modal .btn-primary');
+  updateBtn.dataset.courseId = courseId;
+}
 
-  console.log(updatedRow); // prints the updated array.
-
-  if (isEditable) {
-    // Save mode
-    button.textContent = "Edit";
-
-    fetch(courseEndpoint, {
-      method: 'PATCH',
-      headers: {
-        "Content-type": "application/x-www-form-urlencoded",
-      },
-      body: `course_id=${updatedRow[0].course_id}&` +
-        `course_code=${updatedRow[0].course_code}&` +
-        `course_title=${updatedRow[0].course_title}&` +
-        `units=${updatedRow[0].units}&lecture_hours=${updatedRow[0].lecture_hours}&` +
-        `lab_hours=${updatedRow[0].lab_hours}&dept_id=${updatedRow[0].dept_id}`
-    })
-    .then((response) => response.text())
-    .then((responseText) => {
-      Swal.fire("Success", `${responseText}`, "success");
-      displayCourses();
-    });
-
-    updatedRow.length = 0; // clear the array.
-  } else {
-    // Edit mode
-    button.textContent = "Save";
-    cells[0].focus();
-
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      icon: "info",
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      customClass: {
-        popup: 'colored-toast'
-      },
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer);
-        toast.addEventListener('mouseleave', Swal.resumeTimer);
-      }
-    });
-
-    Toast.fire({
-      icon: 'info',
-      title: 'Edit Mode Activated'
-    });
-
-    updatedRow.length = 0; // clear the array.
+// Update Course
+function updateCourse(button) {
+  // read course id from Update button's dataset
+  const updateBtn = document.querySelector('#update_course_modal .btn-primary');
+  const COURSE_ID = updateBtn?.dataset?.courseId;
+  if (!COURSE_ID) {
+    Swal.fire("Error", "No course selected to update.", "error");
+    return;
   }
+
+  const newCourseCodeInput = document.querySelector('#new_course_code_input');
+  const newCourseTitleInput = document.querySelector('#new_course_title_input');
+  const newUnitsInput = document.querySelector('#new_units_input');
+  const newLectureHrsInput = document.querySelector('#new_lecture_hrs_input');
+  const newLabHrsInput = document.querySelector('#new_lab_hrs_input');
+  const newDepartmentIdInput = document.querySelector('#new_dept_id_input');
+
+  fetch(courseEndpoint, {
+    method: 'PATCH',
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded",
+    },
+    body: `course_id=${COURSE_ID}&` +
+      `course_code=${newCourseCodeInput.value}&` +
+      `course_title=${newCourseTitleInput.value}&` +
+      `units=${newUnitsInput.value}&lecture_hours=${newLectureHrsInput.value}&` +
+      `lab_hours=${newLabHrsInput.value}&dept_id=${newDepartmentIdInput.value}`
+  })
+  .then((response) => response.text())
+  .then((responseText) => {
+    Swal.fire("Success", `${responseText}`, "success");
+    displayCourses();
+  });
 }
 
 // Delete Course
@@ -362,6 +345,7 @@ function sortTable() {
 
 function displayDepartments() {
   const departmentDropdown = document.querySelector('#dept_id_input');
+  const updateDepartmentDropdown = document.querySelector('#new_dept_id_input');
 
   fetch(departmentEndpoint) 
   .then((response) => response.json())
@@ -372,6 +356,7 @@ function displayDepartments() {
       option.innerHTML = department.dept_name;
 
       departmentDropdown.append(option);
+      updateDepartmentDropdown.append(option);
     }
   });
 }
